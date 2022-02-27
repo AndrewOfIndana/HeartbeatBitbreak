@@ -85,11 +85,12 @@ public class Conductor : MonoBehaviour
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
 
         songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+        songPositionInBeats = songPosition / secPerBeat;
 
 
         //TEST
 
-        //Debug.Log(songPosition);
+        //Debug.Log(Mathf.Floor(songPositionInBeats));
     }
 
     public int CheckHitTiming() {
@@ -97,7 +98,30 @@ public class Conductor : MonoBehaviour
         //Returns 0 for a miss,  1 for a general hit, 2 for a perfect hit
 
         int returnVal = 0;
+        float currentTime = (float)AudioSettings.dspTime;
+        int beat = (int)Mathf.Floor(songPositionInBeats);
+
+        float beat1TimeDif = Mathf.Abs(GetTimeForBeat(beat) - currentTime);
+        float beat2TimeDif = Mathf.Abs(GetTimeForBeat(beat + 1) - currentTime);
+
+        //Check if perfect hit
+
+        if (beat1TimeDif <= perfectHitWindow || beat2TimeDif <= perfectHitWindow) {
+            returnVal = 2;
+        } else if (beat1TimeDif <= hitWindow || beat2TimeDif <=hitWindow) {
+
+            returnVal = 1;
+        }
+
+
+
+
 
         return  returnVal;
+    }
+
+    private float GetTimeForBeat(int beat) {
+
+         return this.dspSongTime + (this.secPerBeat * beat);
     }
 }
