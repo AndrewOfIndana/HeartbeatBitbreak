@@ -89,7 +89,7 @@ public class Conductor : MonoBehaviour
 
         //TEST
 
-        Debug.Log(songPosition);
+        //Debug.Log(songPosition);
     }
 
     public int CheckHitTiming() {
