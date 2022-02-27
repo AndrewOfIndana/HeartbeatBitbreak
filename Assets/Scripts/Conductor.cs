@@ -40,7 +40,7 @@ public class Conductor : MonoBehaviour
 
 
     //userinput timing
-
+    [Header("Beat Timing")]
     //window in seconds for a perfect hit
     public float perfectHitWindow;
 
