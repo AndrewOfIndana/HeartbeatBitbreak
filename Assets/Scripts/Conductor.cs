@@ -39,6 +39,16 @@ public class Conductor : MonoBehaviour
     public AudioSource musicSource;
 
 
+    //userinput timing
+
+    //window in seconds for a perfect hit
+    public float perfectHitWindow;
+
+    //window in seconds for a  hit
+    public float hitWindow;
+
+
+
     //Conductor instance
     public static Conductor instance;
 
@@ -75,5 +85,19 @@ public class Conductor : MonoBehaviour
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
 
         songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+
+
+        //TEST
+
+        Debug.Log(songPosition);
+    }
+
+    public int CheckHitTiming() {
+        //Checks if if the song is at a beat.
+        //Returns 0 for a miss,  1 for a general hit, 2 for a perfect hit
+
+        int returnVal = 0;
+
+        return  returnVal;
     }
 }
