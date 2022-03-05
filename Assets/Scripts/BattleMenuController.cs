@@ -4,7 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleMenuController : MonoBehaviour
-{       
+{   
+    //THIS SCRIPT MANAGES THE MENU SYSTEM FOR BATTLE, FOR EACH CHARACTER
+    [Header("Framework")]
+    public Conductor conducter; //Needed for the visual element of a heart beat
+    public PlayerCameras playerCamera; //Needed for the camera to move to the next player
+    
+    [Header("UI References")]
     public GameObject baseUIelement; //UI elements for base layer
     public GameObject itemUIelement; //UI elements for item layer
     public GameObject selectUIelement; //UI elements for selection layer
@@ -88,8 +94,12 @@ public class BattleMenuController : MonoBehaviour
 
     public void ResetMenu() //Resets button layer to next character
     {
-        // ADD CODE FOR THE MENU TO MOVE TO EACH CHARCTER AS WELL AS CODE FOR WHEN ALL FOUR CHARACTERS HAVEN CHOSEN THEIR ACTIONS.
-        selectSFX.Play(); //Play select SFX
+        playerCamera.SwitchCamera();
         StartCoroutine(MenuLevels(unclicked, transparent, transparent, true, false, false, 0, 0f)); //sets button layer to 0
+    }
+    public void FinishMenu() //Finishes everything
+    {
+        playerCamera.SwitchCamera();
+        StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 0, 0f)); //sets button layer to 0
     }
 }
