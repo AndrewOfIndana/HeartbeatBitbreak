@@ -7,7 +7,10 @@ public class EnemyCharacter : GenericCreature
 {
 
     public override void  ReceiveAttack(Attack attack) {
+<<<<<<< HEAD
         //Players always hit attacks so we do not check the ToHit
+=======
+>>>>>>> parent of 5c08b20 (Revert "Merge")
 
         this.health -= attack.GetDamage();
 
