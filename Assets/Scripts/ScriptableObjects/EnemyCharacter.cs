@@ -7,6 +7,7 @@ public class EnemyCharacter : GenericCreature
 {
 
     public override void  ReceiveAttack(Attack attack) {
+        //Players always hit attacks so we do not check the ToHit
 
         this.health -= attack.GetDamage();
 
