@@ -1,8 +1,6 @@
 
 public class Attack {
 
-    protected int Damage;
-    protected int ToHit;
 
     public Attack(int Damage, int ToHit) {
         //Takes the values and initializes the attributes
