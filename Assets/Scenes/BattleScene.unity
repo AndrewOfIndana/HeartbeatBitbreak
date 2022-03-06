@@ -1605,6 +1605,7 @@ AudioSource:
   m_PrefabAsset: {fileID: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
   m_GameObject: {fileID: 302703012}
@@ -1613,6 +1614,11 @@ AudioSource:
 >>>>>>> parent of 5c08b20 (Revert "Merge")
 =======
 >>>>>>> parent of ecd3b66 (Metronome and health bars)
+=======
+  m_GameObject: {fileID: 302703012}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+=======
+>>>>>>> parent of 5c08b20 (Revert "Merge")
   m_GameObject: {fileID: 611900676}
   m_Enabled: 1
   serializedVersion: 4
@@ -1622,10 +1628,14 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
   Loop: 1
 =======
   Loop: 0
 >>>>>>> parent of ecd3b66 (Metronome and health bars)
+=======
+  Loop: 1
+>>>>>>> parent of 5c08b20 (Revert "Merge")
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1711,7 +1721,30 @@ AudioSource:
 Transform:
   m_ObjectHideFlags: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611900676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+>>>>>>> 4c86235b06568a1ce3b4c7ffe0630e064d59deb0
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.02, y: 1.02, z: 1.02}
+  m_Children: []
+  m_Father: {fileID: 81160495}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 25, y: 25}
+  m_SizeDelta: {x: 50, y: 50}
+  m_Pivot: {x: 0.49999997, y: 0.5}
+--- !u!114 &302703014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+>>>>>>> parent of 5c08b20 (Revert "Merge")
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
