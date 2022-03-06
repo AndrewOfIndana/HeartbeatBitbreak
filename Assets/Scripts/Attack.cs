@@ -2,7 +2,7 @@
 public class Attack {
 
     protected int Damage;
-    protected int ToHit;
+    protected int ToHit; //Valid values are 0-19
 
     public Attack(int Damage, int ToHit) {
         //Takes the values and initializes the attributes
