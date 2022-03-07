@@ -9,7 +9,7 @@ public class PartyController : MonoBehaviour
     public PlayerCameras playerCamera; //Needed for the camera to move to the next player
 
 
-    public enum InputStates {INACTIVE, BASIC, DEFENDING, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
+    public enum InputStates {INACTIVE, BASIC, DEFENDING, SKILLS, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
 
     public InputStates inputOptions; //decleration of the current input option avaliable
     public int characterIndex = 1;
@@ -46,7 +46,7 @@ public class PartyController : MonoBehaviour
                     else if (playerIn == 'd')
                     {
                         battleMenu.BasicOptionsMenu(3);
-                        inputOptions = InputStates.SELECTING;
+                        inputOptions = InputStates.SKILLS;
                     }
                 }
                 else if (inputOptions == InputStates.SELECTING)
@@ -72,6 +72,30 @@ public class PartyController : MonoBehaviour
                         PlayerProcess(inputOptions, 3);
                     }
                 }
+                else if (inputOptions == InputStates.SKILLS)
+                {
+                    if (playerIn == 'a')
+                    {
+                        battleMenu.SelectionOptionMenu(0);
+                        PlayerProcess(inputOptions, 0);
+                    }
+                    else if (playerIn == 's')
+                    {
+                        battleMenu.SelectionOptionMenu(1);
+                        PlayerProcess(inputOptions, 1);
+                    }
+                    else if (playerIn == 'd')
+                    {
+                        battleMenu.SelectionOptionMenu(2);
+                        PlayerProcess(inputOptions, 2);
+                    }
+                    else if (playerIn == 'f')
+                    {
+                        battleMenu.SelectionOptionMenu(3);
+                        PlayerProcess(inputOptions, 3);
+                    }
+                }
+
                 else if (inputOptions == InputStates.ITEMSELECTION)
                 {
                     if (playerIn == 'a')
@@ -108,6 +132,11 @@ public class PartyController : MonoBehaviour
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.SELECTING)
+        {
+            Debug.Log("YOU ATTACK ENEMY " + (selection+1));
+            StartCoroutine(NextCharacter(.2f));
+        }
+        else if(selectionType == InputStates.SKILLS)
         {
             Debug.Log("YOU ATTACK ENEMY " + (selection+1));
             StartCoroutine(NextCharacter(.2f));

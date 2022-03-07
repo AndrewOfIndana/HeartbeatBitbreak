@@ -10,15 +10,35 @@ public class PlayerController : MonoBehaviour
     public int characterAttack;
     public int characterDefense;
 
+    public int action = 0;
+    public int actionAgainst = -1;
+    public int actionFor = -1;
+
     void Awake() 
     {
-        characterHealth = character.health;
-        characterAttack = character.atk;
-        characterDefense = character.def;
+        this.characterHealth = character.health;
+        this.characterAttack = character.atk;
+        this.characterDefense = character.def;
     }
 
     public void RecordAttack(int enemy) 
     {
-        
+        this.action = 1;
+        this.actionAgainst = ememy;
     }
+    public void RecordSkills(int enemy) 
+    {
+        this.action = 2;
+        this.actionAgainst = ememy;
+    }
+    public void RecordDefense() 
+    {
+        this.action = 3;
+    }
+    public void RecordItem(int chara) 
+    {
+        this.action = 4;
+        this.actionFor = ememy;
+    }
+
 }
