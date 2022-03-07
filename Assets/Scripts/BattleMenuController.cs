@@ -6,14 +6,13 @@ using UnityEngine.UI;
 public class BattleMenuController : MonoBehaviour
 {   
     //THIS SCRIPT MANAGES THE MENU SYSTEM FOR BATTLE, FOR EACH CHARACTER
-    [Header("Framework")]
-    public Conductor conducter; //Needed for the visual element of a heart beat
-    public PlayerCameras playerCamera; //Needed for the camera to move to the next player
+    private Conductor conducter; //Needed for the visual element of a heart beat
+    public PartyController party;
     
     [Header("UI References")]
-    public GameObject baseUIelement; //UI elements for base layer
-    public GameObject itemUIelement; //UI elements for item layer
+    public GameObject basicUIelement; //UI elements for base layer
     public GameObject selectUIelement; //UI elements for selection layer
+    public GameObject itemSelectUIelement; //UI elements for item layer
 
     [Header("Audio References")]
     public AudioSource selectSFX; //SFX for selecting a button
@@ -21,8 +20,8 @@ public class BattleMenuController : MonoBehaviour
 
     [Header("Image References")]
     public MenuLevel baseButtons; //buttons for the base level
-    public MenuLevel itemButtons; //buttons for the items level
     public MenuLevel selectionButtons; //buttons for enemy selesctions
+    public MenuLevel itemButtons; //buttons for the items level
 
     [System.Serializable]
     public class MenuLevel //class for each button layer
@@ -37,16 +36,16 @@ public class BattleMenuController : MonoBehaviour
 
     void Awake() 
     {
-        StartCoroutine(MenuLevels(unclicked, transparent, transparent, true, false, false, 0, 0f)); //sets button layer to 0
+        conducter = GetComponent<Conductor>();
+        ResetMenu();
     }
 
-    IEnumerator MenuLevels(Color player, Color item, Color selection, bool baseUI, bool itemUI, bool selectUI,  int lbase, float delayTime) //determine which button layers are active and sets the levelBase int
+    IEnumerator MenuLevels(Color player, Color selection, Color item, bool baseUI, bool selectUI, bool itemUI, float delayTime) //determine which button layers are active and sets the levelBase int
     {
         yield return new WaitForSeconds(delayTime);
-        levelBase = lbase; //sets the the button layer int
-        baseUIelement.SetActive(baseUI); //set base ui elements true or false
-        itemUIelement.SetActive(itemUI); //set item ui elements true or false
+        basicUIelement.SetActive(baseUI); //set base ui elements true or false
         selectUIelement.SetActive(selectUI); //set enemy select ui elements true or false
+        itemSelectUIelement.SetActive(itemUI); //set item ui elements true or false
 
         for(int i = 0; i < 4; i++)
         {
@@ -58,48 +57,46 @@ public class BattleMenuController : MonoBehaviour
 
     public void ButtonsClicked(int btnInput) //Determine which buttons are clicked and takes a input from the player
     {
-        if(levelBase == 0) //if the button level is 0 then the base player buttons are active and interactable
+        if(party.inputOptions == PartyController.InputStates.BASIC) 
         {
             baseButtons.buttons[btnInput].color = clicked; //chosen button is grayed
 
-            if(btnInput == 0 || btnInput == 1)  //if the player choses skills or attack
+            if(btnInput == 0 || btnInput == 3)  // [w] or [d]
             {
                 selectSFX.Play(); //Play select SFX
-                StartCoroutine(MenuLevels(transparent, transparent, unclicked, false, false, true, 1, .1f)); //transition to the enemy select layer 
+                StartCoroutine(MenuLevels(transparent, unclicked, transparent, false, true, false, .1f)); //transition to the enemy select layer 
             }
-            else if(btnInput == 2) //if the player choses defend
+            else if(btnInput == 1) // [a]
+            {
+                selectSFX.Play(); //Play select SFX
+                StartCoroutine(MenuLevels(transparent, transparent, unclicked, false, false, true, .1f)); //transition to the item select layer 
+            }
+            else if(btnInput == 2) // [s]
             {
                 selectFinishSFX.Play(); //Play finish select SFX
-                StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 3, .1f)); //transition finished turn
-            }
-            else if(btnInput == 3) //if the player choses items
-            {
-                selectSFX.Play(); //Play select SFX
-                StartCoroutine(MenuLevels(transparent, unclicked, transparent, false, true, false, 2, .1f)); //transition to the item select layer 
+                StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, .1f)); //transition finished turn
             }
         }
-        else if(levelBase == 1) //if the button level is 1 then the enemy select buttons are active and interactable
+        else if(party.inputOptions == PartyController.InputStates.SELECTING) //if the button level is 1 then the enemy select buttons are active and interactable
         {
             selectionButtons.buttons[btnInput].color = clicked; //chosen button is grayed
             selectFinishSFX.Play(); //Play finish select SFX
-            StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 3, .1f));  //transition finished turn
+            StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, .4f));  //transition finished turn
         }
-        else if(levelBase == 2)  //if the button level is 2 then the item select buttons are active and interactable
+        else if(party.inputOptions == PartyController.InputStates.ITEMSELECTION)  //if the button level is 2 then the item select buttons are active and interactable
         {
             itemButtons.buttons[btnInput].color = clicked; //chosen button is grayed
             selectFinishSFX.Play(); //Play finish select SFX
-            StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 3, .1f));  //transition finished turn
+            StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, .4f));  //transition finished turn
         }
     }
 
     public void ResetMenu() //Resets button layer to next character
     {
-        playerCamera.SwitchCamera();
-        StartCoroutine(MenuLevels(unclicked, transparent, transparent, true, false, false, 0, 0f)); //sets button layer to 0
+        StartCoroutine(MenuLevels(unclicked, transparent, transparent, true, false, false, 0f)); //sets button layer to 0
     }
     public void FinishMenu() //Finishes everything
     {
-        playerCamera.SwitchCamera();
-        StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 0, 0f)); //sets button layer to 0
+        StartCoroutine(MenuLevels(transparent, transparent, transparent, false, false, false, 0f)); //sets button layer to 0
     }
 }
