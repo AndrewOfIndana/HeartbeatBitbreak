@@ -5,16 +5,14 @@ using UnityEngine;
 public class PlayerCameras : MonoBehaviour
 {
     private Animator animator;
-    public int cameraIndex = 0;
-
+    
     private void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
-    public void SwitchCamera() 
+    public void SwitchCamera(int cameraIndex) 
     {
-        cameraIndex++;
         if(cameraIndex == 0) 
         {
             animator.Play("PartyShot");
@@ -34,10 +32,6 @@ public class PlayerCameras : MonoBehaviour
         else if(cameraIndex == 4)
         {
             animator.Play("Chara4");
-        }
-        if(cameraIndex > 4)
-        {
-            cameraIndex = -1;
         }
     }
 }

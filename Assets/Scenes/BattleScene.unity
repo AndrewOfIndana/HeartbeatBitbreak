@@ -3810,7 +3810,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd0cc01d1963d54cbd1f849a0c3e005, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  party: {fileID: 645000285}
   basicUIelement: {fileID: 1955033479}
   selectUIelement: {fileID: 1918384238}
   itemSelectUIelement: {fileID: 1423591797}
@@ -3899,6 +3898,7 @@ MonoBehaviour:
   conducter: {fileID: 611900680}
   playerCamera: {fileID: 913927852}
   inputOptions: 0
+  characterIndex: 1
 --- !u!1 &659418048
 GameObject:
   m_ObjectHideFlags: 0
@@ -5523,7 +5523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2f21144396ad164f8e699c62d086d70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraIndex: 0
 --- !u!1 &920452942
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,112 +9,108 @@ public class PartyController : MonoBehaviour
     public PlayerCameras playerCamera; //Needed for the camera to move to the next player
 
 
-    public enum InputStates {INACTIVE, BASIC, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
+    public enum InputStates {INACTIVE, BASIC, DEFENDING, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
 
     public InputStates inputOptions; //decleration of the current input option avaliable
+    public int characterIndex = 1;
 
-    void Awake()
+    void Start()
     {
+        playerCamera.SwitchCamera(characterIndex);
         inputOptions = InputStates.BASIC;//sets inputoption to basic by default
     }
 
     public void PlayerInput(char playerIn)
     {
-        if(inputOptions == InputStates.BASIC)
-        {
-            if(playerIn == 'w')
-            {
-                battleMenu.ButtonsClicked(0);
-                inputOptions = InputStates.SELECTING;
-            }
-            else if(playerIn == 'a')
-            {
-                battleMenu.ButtonsClicked(1);
-                inputOptions = InputStates.ITEMSELECTION;
-            }
-            else if(playerIn == 's')
-            {
-                battleMenu.ButtonsClicked(2);
-                inputOptions = InputStates.INACTIVE;
-            }
-            else if(playerIn == 'd')
-            {
-                battleMenu.ButtonsClicked(3);
-                inputOptions = InputStates.SELECTING;
-            }
-        }
-        else if(inputOptions == InputStates.SELECTING)
-        {
-            if(playerIn == 'a')
-            {
-                battleMenu.ButtonsClicked(0);
-                inputOptions = InputStates.INACTIVE;
-                PlayerAttack(0);
-            }
-            else if(playerIn == 's')
-            {
-                battleMenu.ButtonsClicked(1);
-                inputOptions = InputStates.INACTIVE;
-                PlayerAttack(1);
-            }
-            else if(playerIn == 'd')
-            {
-                battleMenu.ButtonsClicked(2);
-                inputOptions = InputStates.INACTIVE;
-                PlayerAttack(2);
-            }
-            else if(playerIn == 'f')
-            {
-                battleMenu.ButtonsClicked(3);
-                inputOptions = InputStates.INACTIVE;
-                PlayerAttack(3);
-            }
-        }
-        else if(inputOptions == InputStates.ITEMSELECTION)
-        {
-            if(playerIn == 'a')
-            {
-                battleMenu.ButtonsClicked(0);
-                inputOptions = InputStates.INACTIVE;
-                PlayerItem(0);
-            }
-            else if(playerIn == 's')
-            {
-                battleMenu.ButtonsClicked(1);
-                inputOptions = InputStates.INACTIVE;
-                PlayerItem(1);
-            }
-            else if(playerIn == 'd')
-            {
-                battleMenu.ButtonsClicked(2);
-                inputOptions = InputStates.INACTIVE;
-                PlayerItem(2);
-            }
-            else if(playerIn == 'f')
-            {
-                battleMenu.ButtonsClicked(3);    
-                inputOptions = InputStates.INACTIVE;            
-                PlayerItem(3);
+        if(characterIndex < 5) {
+            if(inputOptions == InputStates.BASIC) {
+                if(playerIn == 'w') {
+                    battleMenu.BasicOptionsMenu(0);
+                    inputOptions = InputStates.SELECTING;
+                } else if(playerIn == 'a') {
+                    battleMenu.BasicOptionsMenu(1);
+                    inputOptions = InputStates.ITEMSELECTION;
+                } else if(playerIn == 's') {
+                    battleMenu.BasicOptionsMenu(2);
+                    inputOptions = InputStates.DEFENDING;
+                    PlayerProcess(inputOptions, 0);
+                } else if(playerIn == 'd') {
+                    battleMenu.BasicOptionsMenu(3);
+                    inputOptions = InputStates.SELECTING;
+                }
+            } else if(inputOptions == InputStates.SELECTING) {
+                if(playerIn == 'a') {
+                    battleMenu.SelectionOptionMenu(0);
+                    PlayerProcess(inputOptions, 0);
+                } else if(playerIn == 's') {
+                    battleMenu.SelectionOptionMenu(1);
+                    PlayerProcess(inputOptions, 1);
+                } else if(playerIn == 'd') {
+                    battleMenu.SelectionOptionMenu(2);
+                    PlayerProcess(inputOptions, 2);
+                } else if(playerIn == 'f') {
+                    battleMenu.SelectionOptionMenu(3);
+                    PlayerProcess(inputOptions, 3);
+                }
+            } else if(inputOptions == InputStates.ITEMSELECTION) {
+                if(playerIn == 'a') {
+                    battleMenu.ItemOptionMenu(0);
+                    PlayerProcess(inputOptions, 0);
+                } else if(playerIn == 's') {
+                    battleMenu.ItemOptionMenu(1);
+                    PlayerProcess(inputOptions, 1);
+                } else if(playerIn == 'd') {
+                    battleMenu.ItemOptionMenu(2);
+                    PlayerProcess(inputOptions, 2);
+                } else if(playerIn == 'f') {
+                    battleMenu.ItemOptionMenu(3);
+                    PlayerProcess(inputOptions, 3);
+                }
             }
         }
     }
 
-    public void PlayerAttack(int s)
+    public void PlayerProcess(InputStates selectionType, int selection)
     {
-        Debug.Log("You attacked ememy " + (s+1));
-        StartCoroutine(MoveCharacter(.2f));
-    }
-    public void PlayerItem(int s)
-    {
-        Debug.Log("You used item number " + (s+1));
-        StartCoroutine(MoveCharacter(.2f));
+        if(selectionType == InputStates.DEFENDING)
+        {
+            Debug.Log("YOU DEFEND");
+            StartCoroutine(NextCharacter(.2f));
+        }
+        else if(selectionType == InputStates.SELECTING)
+        {
+            Debug.Log("YOU ATTACK ENEMY " + (selection+1));
+            StartCoroutine(NextCharacter(.2f));
+        }
+        else if(selectionType == InputStates.ITEMSELECTION)
+        {
+            Debug.Log("YOU USE ITEM ON CHARACTER " + (selection+1));
+            StartCoroutine(NextCharacter(.2f));
+        }
     }
 
-    IEnumerator MoveCharacter(float delayTime)
+    IEnumerator NextCharacter(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
-        inputOptions = InputStates.BASIC; 
-        playerCamera.SwitchCamera();
-        battleMenu.ResetMenu();
+        characterIndex++;
+        playerCamera.SwitchCamera(characterIndex);
+
+        if (characterIndex < 5) {
+            inputOptions = InputStates.BASIC;
+            battleMenu.ResetMenu();
+        }
+        else
+        {
+            StartCoroutine(FinishTurn(0));
+        }
+    }
+    IEnumerator FinishTurn(float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        characterIndex = 0;
+        playerCamera.SwitchCamera(characterIndex);
+        inputOptions = InputStates.INACTIVE;
+        battleMenu.FinishMenu();
+        StartCoroutine(NextCharacter(5f));
     }
 }
