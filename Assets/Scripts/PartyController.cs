@@ -22,51 +22,81 @@ public class PartyController : MonoBehaviour
 
     public void PlayerInput(char playerIn)
     {
-        if(characterIndex < 5) {
-            if(inputOptions == InputStates.BASIC) {
-                if(playerIn == 'w') {
-                    battleMenu.BasicOptionsMenu(0);
-                    inputOptions = InputStates.SELECTING;
-                } else if(playerIn == 'a') {
-                    battleMenu.BasicOptionsMenu(1);
-                    inputOptions = InputStates.ITEMSELECTION;
-                } else if(playerIn == 's') {
-                    battleMenu.BasicOptionsMenu(2);
-                    inputOptions = InputStates.DEFENDING;
-                    PlayerProcess(inputOptions, 0);
-                } else if(playerIn == 'd') {
-                    battleMenu.BasicOptionsMenu(3);
-                    inputOptions = InputStates.SELECTING;
+        if (conducter.CheckHitTiming() > 0) {
+            if (characterIndex < 5)
+            {
+                if (inputOptions == InputStates.BASIC)
+                {
+                    if (playerIn == 'w')
+                    {
+                        battleMenu.BasicOptionsMenu(0);
+                        inputOptions = InputStates.SELECTING;
+                    }
+                    else if (playerIn == 'a')
+                    {
+                        battleMenu.BasicOptionsMenu(1);
+                        inputOptions = InputStates.ITEMSELECTION;
+                    }
+                    else if (playerIn == 's')
+                    {
+                        battleMenu.BasicOptionsMenu(2);
+                        inputOptions = InputStates.DEFENDING;
+                        PlayerProcess(inputOptions, 0);
+                    }
+                    else if (playerIn == 'd')
+                    {
+                        battleMenu.BasicOptionsMenu(3);
+                        inputOptions = InputStates.SELECTING;
+                    }
                 }
-            } else if(inputOptions == InputStates.SELECTING) {
-                if(playerIn == 'a') {
-                    battleMenu.SelectionOptionMenu(0);
-                    PlayerProcess(inputOptions, 0);
-                } else if(playerIn == 's') {
-                    battleMenu.SelectionOptionMenu(1);
-                    PlayerProcess(inputOptions, 1);
-                } else if(playerIn == 'd') {
-                    battleMenu.SelectionOptionMenu(2);
-                    PlayerProcess(inputOptions, 2);
-                } else if(playerIn == 'f') {
-                    battleMenu.SelectionOptionMenu(3);
-                    PlayerProcess(inputOptions, 3);
+                else if (inputOptions == InputStates.SELECTING)
+                {
+                    if (playerIn == 'a')
+                    {
+                        battleMenu.SelectionOptionMenu(0);
+                        PlayerProcess(inputOptions, 0);
+                    }
+                    else if (playerIn == 's')
+                    {
+                        battleMenu.SelectionOptionMenu(1);
+                        PlayerProcess(inputOptions, 1);
+                    }
+                    else if (playerIn == 'd')
+                    {
+                        battleMenu.SelectionOptionMenu(2);
+                        PlayerProcess(inputOptions, 2);
+                    }
+                    else if (playerIn == 'f')
+                    {
+                        battleMenu.SelectionOptionMenu(3);
+                        PlayerProcess(inputOptions, 3);
+                    }
                 }
-            } else if(inputOptions == InputStates.ITEMSELECTION) {
-                if(playerIn == 'a') {
-                    battleMenu.ItemOptionMenu(0);
-                    PlayerProcess(inputOptions, 0);
-                } else if(playerIn == 's') {
-                    battleMenu.ItemOptionMenu(1);
-                    PlayerProcess(inputOptions, 1);
-                } else if(playerIn == 'd') {
-                    battleMenu.ItemOptionMenu(2);
-                    PlayerProcess(inputOptions, 2);
-                } else if(playerIn == 'f') {
-                    battleMenu.ItemOptionMenu(3);
-                    PlayerProcess(inputOptions, 3);
+                else if (inputOptions == InputStates.ITEMSELECTION)
+                {
+                    if (playerIn == 'a')
+                    {
+                        battleMenu.ItemOptionMenu(0);
+                        PlayerProcess(inputOptions, 0);
+                    }
+                    else if (playerIn == 's')
+                    {
+                        battleMenu.ItemOptionMenu(1);
+                        PlayerProcess(inputOptions, 1);
+                    }
+                    else if (playerIn == 'd')
+                    {
+                        battleMenu.ItemOptionMenu(2);
+                        PlayerProcess(inputOptions, 2);
+                    }
+                    else if (playerIn == 'f')
+                    {
+                        battleMenu.ItemOptionMenu(3);
+                        PlayerProcess(inputOptions, 3);
+                    }
                 }
             }
+
         }
     }
 

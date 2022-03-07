@@ -58,6 +58,7 @@ public class Conductor : MonoBehaviour
     {
         this.StartLoop();
     }
+    
     public void StartLoop(){
         //Load the AudioSource attached to the Conductor GameObject
         musicSource = GetComponent<AudioSource>();
