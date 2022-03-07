@@ -47,7 +47,7 @@ public class Conductor : MonoBehaviour
     //window in seconds for a  hit
     public float hitWindow;
 
-
+    public float beatCheckOffSet = 0;
 
     //Conductor instance
     public static Conductor instance;
@@ -108,8 +108,8 @@ public class Conductor : MonoBehaviour
         float currentTime = (float)AudioSettings.dspTime;
         int beat = (int)Mathf.Floor(songPositionInBeats);
 
-        float beat1TimeDif = Mathf.Abs(GetTimeForBeat(beat) - currentTime);
-        float beat2TimeDif = Mathf.Abs(GetTimeForBeat(beat + 1) - currentTime);
+        float beat1TimeDif = Mathf.Abs(GetTimeForBeat(beat) - currentTime + beatCheckOffSet);
+        float beat2TimeDif = Mathf.Abs(GetTimeForBeat(beat + 1) - currentTime+ beatCheckOffSet);
 
         //Check if perfect hit
 
