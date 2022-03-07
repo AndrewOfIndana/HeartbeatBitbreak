@@ -140,7 +140,7 @@ public class Conductor : MonoBehaviour
 
     public int GetCurrentRelateBeat() {
 
-        return GetCurrentBeat() % this.beatsPerLoop;
+        return (int)(GetCurrentBeat() % this.beatsPerLoop);
     
     }
 }
