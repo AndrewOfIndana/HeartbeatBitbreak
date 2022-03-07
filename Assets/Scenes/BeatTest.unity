@@ -247,7 +247,7 @@ MonoBehaviour:
   firstBeatOffset: 0
   dspSongTime: 0
   musicSource: {fileID: 0}
-  perfectHitWindow: 0.1
+  perfectHitWindow: 0.125
   hitWindow: 0
 --- !u!4 &783484812
 Transform:
