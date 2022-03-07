@@ -79,14 +79,17 @@ public class Conductor : MonoBehaviour
     {
         //calculate the loop position
         if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
+        {
             completedLoops++;
         loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+        Debug.Log("Loop");
+
+        }
 
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
 
         songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
         songPositionInBeats = songPosition / secPerBeat;
-
 
         //TEST
 
