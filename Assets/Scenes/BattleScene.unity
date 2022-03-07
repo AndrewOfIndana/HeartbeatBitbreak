@@ -3782,8 +3782,9 @@ MonoBehaviour:
   firstBeatOffset: 0
   dspSongTime: 0
   musicSource: {fileID: 611900677}
-  perfectHitWindow: 0
+  perfectHitWindow: 0.125
   hitWindow: 0
+  beatCheckOffSet: 0.3
 --- !u!114 &611900681
 MonoBehaviour:
   m_ObjectHideFlags: 0
