@@ -58,8 +58,8 @@ public class Conductor : MonoBehaviour
     {
         this.StartLoop();
     }
-    
-    public void StartLoop(){
+
+    public void StartLoop() {
         //Load the AudioSource attached to the Conductor GameObject
         musicSource = GetComponent<AudioSource>();
 
@@ -71,7 +71,7 @@ public class Conductor : MonoBehaviour
 
         //Start the music
         musicSource.Play();
-        
+
     }
     void Awake()
     {
@@ -85,8 +85,8 @@ public class Conductor : MonoBehaviour
         if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
         {
             completedLoops++;
-        loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
-        Debug.Log("Loop");
+            loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+            Debug.Log("Loop");
 
         }
 
@@ -106,16 +106,16 @@ public class Conductor : MonoBehaviour
 
         int returnVal = 0;
         float currentTime = (float)AudioSettings.dspTime;
-        int beat = (int)Mathf.Floor(songPositionInBeats);
+        int beat = GetCurrentBeat();
 
         float beat1TimeDif = Mathf.Abs(GetTimeForBeat(beat) - currentTime + beatCheckOffSet);
-        float beat2TimeDif = Mathf.Abs(GetTimeForBeat(beat + 1) - currentTime+ beatCheckOffSet);
+        float beat2TimeDif = Mathf.Abs(GetTimeForBeat(beat + 1) - currentTime + beatCheckOffSet);
 
         //Check if perfect hit
 
         if (beat1TimeDif <= perfectHitWindow || beat2TimeDif <= perfectHitWindow) {
             returnVal = 2;
-        } else if (beat1TimeDif <= hitWindow || beat2TimeDif <=hitWindow) {
+        } else if (beat1TimeDif <= hitWindow || beat2TimeDif <= hitWindow) {
 
             returnVal = 1;
         }
@@ -124,11 +124,23 @@ public class Conductor : MonoBehaviour
 
 
 
-        return  returnVal;
+        return returnVal;
     }
 
     private float GetTimeForBeat(int beat) {
 
-         return this.dspSongTime + (this.secPerBeat * beat);
+        return this.dspSongTime + (this.secPerBeat * beat);
+    }
+
+    public int GetCurrentBeat() {
+
+        return (int)Mathf.Floor(songPositionInBeats);
+
+    }
+
+    public int GetCurrentRelateBeat() {
+
+        return GetCurrentBeat() % this.beatsPerLoop;
+    
     }
 }
