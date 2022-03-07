@@ -56,6 +56,9 @@ public class Conductor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.StartLoop();
+    }
+    public void StartLoop(){
         //Load the AudioSource attached to the Conductor GameObject
         musicSource = GetComponent<AudioSource>();
 
@@ -67,8 +70,8 @@ public class Conductor : MonoBehaviour
 
         //Start the music
         musicSource.Play();
+        
     }
-
     void Awake()
     {
         instance = this;
