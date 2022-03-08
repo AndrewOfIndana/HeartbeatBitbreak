@@ -129,7 +129,7 @@ public class Conductor : MonoBehaviour
 
     private float GetTimeForBeat(int beat) {
 
-        return this.dspSongTime + (this.secPerBeat * beat);
+        return this.dspSongTime + firstBeatOffset + (this.secPerBeat * beat);
     }
 
     public int GetCurrentBeat() {
