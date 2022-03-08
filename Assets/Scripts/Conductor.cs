@@ -92,7 +92,7 @@ public class Conductor : MonoBehaviour
 
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
 
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime - firstBeatOffset);
+        songPosition = (float)(AudioSettings.dspTime - dspSongTime - (firstBeatOffset * (completedLoops+1)));
         songPositionInBeats = songPosition / secPerBeat;
 
         //TEST
@@ -129,7 +129,7 @@ public class Conductor : MonoBehaviour
 
     private float GetTimeForBeat(int beat) {
 
-        return this.dspSongTime + firstBeatOffset + (this.secPerBeat * beat);
+        return this.dspSongTime + firstBeatOffset * (completedLoops + 1) + (this.secPerBeat * beat);
     }
 
     public int GetCurrentBeat() {
