@@ -19,9 +19,14 @@ public class PlayerCharacter : GenericCreature
 
     public override Attack GetAttack()
     {
-        int damage = this.atk;
-        int tohit = 20; 
+        return this.GetAttack(0); //Calls the one with an int signature to reduce redunancy
+    }
+
+    public Attack GetAttack(int bonus) {
+        int damage = this.atk + bonus;
+        int tohit = 20; //20 is higher than any valid def value so it should always hit
 
         return new Attack(damage, tohit);
+    
     }
 }
