@@ -10,13 +10,15 @@ public class PlayerController : MonoBehaviour
     public int characterAttack;
     public int characterDefense;
 
+    //What do these values do? What does a 0 represent? Does a 0 for an action value have the same meaning as the 0 for actionAgainst or ActionFor?
     public int action = 0;
     public int actionAgainst = -1;
     public int actionFor = -1;
 
     void Awake() 
     {
-        this.characterHealth = character.health;
+        //Why do we have these values? This seems to just duplicate the functionality in PlayerCharacter character? those values are public so we should just directly access them
+        this.characterHealth = character.health; 
         this.characterAttack = character.atk;
         this.characterDefense = character.def;
     }
@@ -38,7 +40,9 @@ public class PlayerController : MonoBehaviour
     public void RecordItem(int chara) 
     {
         this.action = 4;
-        this.actionFor = ememy; //This doesn't exist in this scope???
+
+        //I commented this line out so that it would compile
+        //this.actionFor = ememy; //This doesn't exist in this scope???
     }
 
 }
