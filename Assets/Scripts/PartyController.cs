@@ -22,7 +22,7 @@ public class PartyController : MonoBehaviour
 
     public void PlayerInput(char playerIn)
     {
-        if (conducter.CheckHitTiming() > 0) {
+        if (conducter.CheckHitTiming() > 0) { //CheckingHitTiming returns a 0 for a miss so any integer greater than that indicates a sucessful hit
             if (characterIndex < 5)
             {
                 if (inputOptions == InputStates.BASIC)
@@ -121,7 +121,11 @@ public class PartyController : MonoBehaviour
                 }
             }
 
+        } else
+        {
+            //TODO Implement the reseting of the flow meter
         }
+
     }
 
     public void PlayerProcess(InputStates selectionType, int selection)
