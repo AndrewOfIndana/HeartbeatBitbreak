@@ -24,12 +24,12 @@ public class PlayerController : MonoBehaviour
     public void RecordAttack(int enemy) 
     {
         this.action = 1;
-        this.actionAgainst = ememy;
+        this.actionAgainst = enemy;
     }
     public void RecordSkills(int enemy) 
     {
         this.action = 2;
-        this.actionAgainst = ememy;
+        this.actionAgainst = enemy;
     }
     public void RecordDefense() 
     {
@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     public void RecordItem(int chara) 
     {
         this.action = 4;
-        this.actionFor = ememy;
+        this.actionFor = ememy; //This doesn't exist in this scope???
     }
 
 }
