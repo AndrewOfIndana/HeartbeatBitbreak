@@ -21,7 +21,11 @@ public class Metronome : MonoBehaviour
     [Header("Player Marker Sprite")]
     public GameObject MarkerTemplate;
 
-    
+    [Header("Progress Indicator")]
+    public GameObject ProgressSprite;
+
+    [Header("Timing")]
+    public float TravelTime;
    
 
     private List<GameObject> BeatArray;
@@ -31,12 +35,15 @@ public class Metronome : MonoBehaviour
     float distance;
     float distanceBetweenBeats;
 
+    float speedPerSec;
+
     // Start is called before the first frame update
     void Start()
     {
         MarkerTemplate.SetActive(false); //Keep marker template hidden visually
         GenerateBeatSprites();
         GenerateMarkers(new List<int> { 1,2 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
+        ResetProgress();
     }
     //Generates UI Beat
     public void GenerateBeatSprites() {
@@ -96,11 +103,20 @@ public class Metronome : MonoBehaviour
 
     public void ChangeBeatPosition(int MarkerPosition, int BeatPosition) {
         this.AttachMarker(this.MarkerArray[MarkerPosition], this.BeatArray[BeatPosition]);
-    } 
+    }
 
     // Update is called once per frame
+    public void ResetProgress() {
+        speedPerSec = distance / TravelTime;
+        this.ProgressSprite.transform.SetPositionAndRotation(this.StartPoint.transform.position, this.ProgressSprite.transform.rotation);
+    }
+
+    private void UpdateProgressBar() {
+        this.ProgressSprite.transform.Translate(Vector3.right * speedPerSec * Time.deltaTime);
+    }
+
     void Update()
     {
-        
+        UpdateProgressBar();
     }
 }
