@@ -11,14 +11,21 @@ public class Metronome : MonoBehaviour
     [Header("Values")]
     public int NumberOfBeats;
 
-    [Header("Sprite")]
+    [Header("Beat Sprite")]
     public GameObject BeatTemplate;
+    
 
     [Header("Beat Container")]
     public GameObject BeatHolder;
 
-    private List<GameObject> BeatArray;
+    [Header("Player Marker Sprite")]
+    public GameObject MarkerTemplate;
 
+    
+   
+
+    private List<GameObject> BeatArray;
+    private List<GameObject> MarkerArray;
     //Misc Variables
 
     float distance;
@@ -27,7 +34,9 @@ public class Metronome : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MarkerTemplate.SetActive(false); //Keep marker template hidden visually
         GenerateBeatSprites();
+        GenerateMarkers(new List<int> { 1,2 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
     }
     //Generates UI Beat
     public void GenerateBeatSprites() {
@@ -60,6 +69,34 @@ public class Metronome : MonoBehaviour
 
         }
     }
+
+    public void GenerateMarkers(List<int> MarkerPositions) {
+        //Each integer in MarkerPositions is the index of a beat that has a marker attached, starting from 0
+        //The beat will be instantiated, attached to the beat as a child, move to the parents position, and offset
+        GameObject temp;
+        this.MarkerArray = new List<GameObject>();
+
+        foreach (int element in MarkerPositions) {
+            temp = GameObject.Instantiate(this.MarkerTemplate);
+            temp.SetActive(temp);
+            this.AttachMarker(temp, this.BeatArray[element]);
+            this.MarkerArray.Add(temp);
+        }
+
+        
+    }
+
+    public void AttachMarker(GameObject Marker, GameObject ParentBeat) {
+        //Attaches Marker to Gameobject, sets its position, and offsets it
+
+        Marker.transform.SetParent(ParentBeat.transform);
+        Marker.transform.SetPositionAndRotation(ParentBeat.transform.position, MarkerTemplate.transform.rotation);
+        Marker.transform.Translate(Vector3.left * distanceBetweenBeats / 2);
+    }
+
+    public void ChangeBeatPosition(int MarkerPosition, int BeatPosition) {
+        this.AttachMarker(this.MarkerArray[MarkerPosition], this.BeatArray[BeatPosition]);
+    } 
 
     // Update is called once per frame
     void Update()
