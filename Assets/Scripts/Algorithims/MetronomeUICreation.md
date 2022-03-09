@@ -19,7 +19,7 @@ Output
 Steps
 
 	Calculate X distance between StartPoint and EndPoint
-	Set BeatTemplates Location To StartPoint
+	Set BeatTemplate's Location To StartPoint
 	
 	For i in range (1, NumberOfBeats) (<)
 		Instantiate(BeatTemplate) and move it right ( i * Distance)
