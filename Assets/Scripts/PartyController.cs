@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PartyController : MonoBehaviour
 {
+    public GameManager gameManager;
     public BattleMenuController battleMenu;
     public Conductor conducter;
     public PlayerCameras playerCamera; //Needed for the camera to move to the next player
-
+    public PlayerController[] characters;
 
     public enum InputStates {INACTIVE, BASIC, DEFENDING, SKILLS, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
 
@@ -49,7 +50,7 @@ public class PartyController : MonoBehaviour
                         inputOptions = InputStates.SKILLS;
                     }
                 }
-                else if (inputOptions == InputStates.SELECTING)
+                else if (inputOptions == InputStates.SELECTING || inputOptions == InputStates.SKILLS)
                 {
                     if (playerIn == 'a')
                     {
@@ -72,30 +73,6 @@ public class PartyController : MonoBehaviour
                         PlayerProcess(inputOptions, 3);
                     }
                 }
-                else if (inputOptions == InputStates.SKILLS)
-                {
-                    if (playerIn == 'a')
-                    {
-                        battleMenu.SelectionOptionMenu(0);
-                        PlayerProcess(inputOptions, 0);
-                    }
-                    else if (playerIn == 's')
-                    {
-                        battleMenu.SelectionOptionMenu(1);
-                        PlayerProcess(inputOptions, 1);
-                    }
-                    else if (playerIn == 'd')
-                    {
-                        battleMenu.SelectionOptionMenu(2);
-                        PlayerProcess(inputOptions, 2);
-                    }
-                    else if (playerIn == 'f')
-                    {
-                        battleMenu.SelectionOptionMenu(3);
-                        PlayerProcess(inputOptions, 3);
-                    }
-                }
-
                 else if (inputOptions == InputStates.ITEMSELECTION)
                 {
                     if (playerIn == 'a')
@@ -130,24 +107,26 @@ public class PartyController : MonoBehaviour
 
     public void PlayerProcess(InputStates selectionType, int selection)
     {
+        int charIndex = characterIndex - 1;
+
         if(selectionType == InputStates.DEFENDING)
         {
-            Debug.Log("YOU DEFEND");
+            characters[charIndex].RecordAction(0 ,-1, -1);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.SELECTING)
         {
-            Debug.Log("YOU ATTACK ENEMY " + (selection+1));
+            characters[charIndex].RecordAction(1 ,selection, -1);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.SKILLS)
         {
-            Debug.Log("YOU ATTACK ENEMY " + (selection+1));
+            characters[charIndex].RecordAction(2 ,selection, selection);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.ITEMSELECTION)
         {
-            Debug.Log("YOU USE ITEM ON CHARACTER " + (selection+1));
+            characters[charIndex].RecordAction(3 ,-1, selection);
             StartCoroutine(NextCharacter(.2f));
         }
     }
@@ -164,9 +143,10 @@ public class PartyController : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FinishTurn(0));
+            StartCoroutine(FinishTurn(.2f));
         }
     }
+
     IEnumerator FinishTurn(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
@@ -174,6 +154,11 @@ public class PartyController : MonoBehaviour
         playerCamera.SwitchCamera(characterIndex);
         inputOptions = InputStates.INACTIVE;
         battleMenu.FinishMenu();
-        StartCoroutine(NextCharacter(5f));
+        gameManager.ActionPhase();
+
+        for(int i = 0; i < characters.Length; i++)
+        {
+            characters[i].PerformAction();
+        }
     }
 }

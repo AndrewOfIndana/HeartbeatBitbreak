@@ -5,44 +5,42 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public PlayerCharacter character;
+    public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
+    public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
+    public int itemIndex = -1; //records what item is going to be selected should be -1 to deselct
 
-    public int characterHealth;
-    public int characterAttack;
-    public int characterDefense;
-
-    //What do these values do? What does a 0 represent? Does a 0 for an action value have the same meaning as the 0 for actionAgainst or ActionFor?
-    public int action = 0;
-    public int actionAgainst = -1;
-    public int actionFor = -1;
-
-    void Awake() 
+    public void RecordAction(int action, int enemySelction, int itemSelection)
     {
-        //Why do we have these values? This seems to just duplicate the functionality in PlayerCharacter character? those values are public so we should just directly access them
-        this.characterHealth = character.health; 
-        this.characterAttack = character.atk;
-        this.characterDefense = character.def;
+        this.actionIndex = action;
+        this.attackIndex = enemySelction;
+        this.itemIndex = itemSelection;
     }
 
-    public void RecordAttack(int enemy) 
+    public void PerformAction()
     {
-        this.action = 1;
-        this.actionAgainst = enemy;
-    }
-    public void RecordSkills(int enemy) 
-    {
-        this.action = 2;
-        this.actionAgainst = enemy;
-    }
-    public void RecordDefense() 
-    {
-        this.action = 3;
-    }
-    public void RecordItem(int chara) 
-    {
-        this.action = 4;
-
-        //I commented this line out so that it would compile
-        //this.actionFor = ememy; //This doesn't exist in this scope???
+        if(this.actionIndex == 0) //Defend
+        {
+            Debug.Log("Character defends");
+        }
+        else if(this.actionIndex == 1) 
+        {
+            Debug.Log("Character attacks enemy " + (this.attackIndex + 1));
+        }
+        else if(this.actionIndex == 2) 
+        {
+            Debug.Log("Character attacks enemy " + (this.attackIndex + 1));
+        }
+        else if(this.actionIndex == 3) 
+        {
+            Debug.Log("Character uses " + (this.itemIndex + 1));
+        }
     }
 
+    public void Reaction() 
+    {
+        //Add attack class
+        this.actionIndex = -1;
+        this.attackIndex = -1;
+        this.itemIndex = -1;
+    }
 }

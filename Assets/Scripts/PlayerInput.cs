@@ -35,7 +35,7 @@ public class PlayerInput : MonoBehaviour
                     party.PlayerInput('d');
                 }
             }
-            else if(party.inputOptions == PartyController.InputStates.SELECTING || party.inputOptions == PartyController.InputStates.ITEMSELECTION) 
+            else if(party.inputOptions == PartyController.InputStates.SELECTING || party.inputOptions == PartyController.InputStates.ITEMSELECTION || party.inputOptions == PartyController.InputStates.SKILLS) 
             {
                 if(Input.GetKeyDown("a"))
                 {
