@@ -1,4 +1,4 @@
-using System.Collections;
+using System.Collections; 
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class Metronome : MonoBehaviour
     public GameObject ProgressSprite;
 
     [Header("Timing")]
-    public float TravelTime;
+    public float TravelTime; //NEEDS TO BE SET BY ANOTHER SCRIPT
    
 
     private List<GameObject> BeatArray;
@@ -42,7 +42,7 @@ public class Metronome : MonoBehaviour
     {
         MarkerTemplate.SetActive(false); //Keep marker template hidden visually
         GenerateBeatSprites();
-        GenerateMarkers(new List<int> { 1,2 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
+        GenerateMarkers(new List<int> { 0, 4, 8, 12 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
         ResetProgress();
     }
     //Generates UI Beat
