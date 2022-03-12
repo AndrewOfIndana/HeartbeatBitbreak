@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Conductor : MonoBehaviour
+public class Conductor : MonoBehaviour, SyncBeat
 {
     //the number of beats in each loop
     public float beatsPerLoop;
@@ -56,10 +56,10 @@ public class Conductor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.StartLoop();
+        //this.StartLoop();
     }
 
-    public void StartLoop() {
+    public void StartBeat() {
         //Load the AudioSource attached to the Conductor GameObject
         musicSource = GetComponent<AudioSource>();
 
