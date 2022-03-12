@@ -32,11 +32,11 @@ public class PlayerController : MonoBehaviour
         }
         else if(this.actionIndex == 3) 
         {
-            Debug.Log("Character uses " + (this.itemIndex + 1));
+            Debug.Log("Character uses item " + (this.itemIndex + 1));
         }
     }
 
-    public void Reaction() 
+    public void ResetAction() 
     {
         //Add attack class
         this.actionIndex = -1;

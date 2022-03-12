@@ -86,8 +86,6 @@ public class Conductor : MonoBehaviour
         {
             completedLoops++;
             loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
-            Debug.Log("Loop");
-
         }
 
         loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;

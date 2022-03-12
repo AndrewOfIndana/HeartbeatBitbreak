@@ -36,7 +36,6 @@ public class BattleMenuController : MonoBehaviour
     void Awake() 
     {
         conducter = GetComponent<Conductor>(); //from the start get the conductor script
-        ResetMenu(); //reset the menu to only feature the first layer
     }
 
     IEnumerator MenuLevels(Color player, Color selection, Color item, bool baseUI, bool selectUI, bool itemUI, float delayTime) //determine which button layers are active and sets the levelBase int

@@ -13,10 +13,17 @@ public class PartyController : MonoBehaviour
     public enum InputStates {INACTIVE, BASIC, DEFENDING, SKILLS, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
 
     public InputStates inputOptions; //decleration of the current input option avaliable
-    public int characterIndex = 1;
+    public int characterIndex;
 
     void Start()
     {
+        PlayerInputStart();
+    }
+
+    public void PlayerInputStart()
+    {
+        characterIndex = 1;
+        battleMenu.ResetMenu();
         playerCamera.SwitchCamera(characterIndex);
         inputOptions = InputStates.BASIC;//sets inputoption to basic by default
     }
@@ -24,76 +31,44 @@ public class PartyController : MonoBehaviour
     public void PlayerInput(char playerIn)
     {
         if (conducter.CheckHitTiming() > 0) { //CheckingHitTiming returns a 0 for a miss so any integer greater than that indicates a sucessful hit
-            if (characterIndex < 5)
+            if (characterIndex < 5) //if all four characters have gone, then this will not work
             {
                 if (inputOptions == InputStates.BASIC)
                 {
                     if (playerIn == 'w')
                     {
-                        battleMenu.BasicOptionsMenu(0);
-                        inputOptions = InputStates.SELECTING;
+                        PlayerBasic(0, InputStates.SELECTING);
                     }
                     else if (playerIn == 'a')
                     {
-                        battleMenu.BasicOptionsMenu(1);
-                        inputOptions = InputStates.ITEMSELECTION;
+                        PlayerBasic(1, InputStates.ITEMSELECTION);
                     }
                     else if (playerIn == 's')
                     {
-                        battleMenu.BasicOptionsMenu(2);
-                        inputOptions = InputStates.DEFENDING;
-                        PlayerProcess(inputOptions, 0);
+                        PlayerBasic(2, InputStates.DEFENDING);
                     }
                     else if (playerIn == 'd')
                     {
-                        battleMenu.BasicOptionsMenu(3);
-                        inputOptions = InputStates.SKILLS;
+                        PlayerBasic(3, InputStates.SKILLS);
                     }
                 }
-                else if (inputOptions == InputStates.SELECTING || inputOptions == InputStates.SKILLS)
+                else if (inputOptions == InputStates.SELECTING || inputOptions == InputStates.SKILLS || inputOptions == InputStates.ITEMSELECTION)
                 {
                     if (playerIn == 'a')
                     {
-                        battleMenu.SelectionOptionMenu(0);
-                        PlayerProcess(inputOptions, 0);
+                        PlayerProcess(0, inputOptions, 0);
                     }
                     else if (playerIn == 's')
                     {
-                        battleMenu.SelectionOptionMenu(1);
-                        PlayerProcess(inputOptions, 1);
+                        PlayerProcess(1, inputOptions, 1);
                     }
                     else if (playerIn == 'd')
                     {
-                        battleMenu.SelectionOptionMenu(2);
-                        PlayerProcess(inputOptions, 2);
+                        PlayerProcess(2, inputOptions, 2);
                     }
                     else if (playerIn == 'f')
                     {
-                        battleMenu.SelectionOptionMenu(3);
-                        PlayerProcess(inputOptions, 3);
-                    }
-                }
-                else if (inputOptions == InputStates.ITEMSELECTION)
-                {
-                    if (playerIn == 'a')
-                    {
-                        battleMenu.ItemOptionMenu(0);
-                        PlayerProcess(inputOptions, 0);
-                    }
-                    else if (playerIn == 's')
-                    {
-                        battleMenu.ItemOptionMenu(1);
-                        PlayerProcess(inputOptions, 1);
-                    }
-                    else if (playerIn == 'd')
-                    {
-                        battleMenu.ItemOptionMenu(2);
-                        PlayerProcess(inputOptions, 2);
-                    }
-                    else if (playerIn == 'f')
-                    {
-                        battleMenu.ItemOptionMenu(3);
-                        PlayerProcess(inputOptions, 3);
+                        PlayerProcess(3, inputOptions, 3);
                     }
                 }
             }
@@ -105,28 +80,36 @@ public class PartyController : MonoBehaviour
 
     }
 
-    public void PlayerProcess(InputStates selectionType, int selection)
+    public void PlayerBasic(int menuSelection, InputStates selectionType)
     {
-        int charIndex = characterIndex - 1;
+        inputOptions = selectionType;
+        battleMenu.BasicOptionsMenu(menuSelection);
 
         if(selectionType == InputStates.DEFENDING)
         {
-            characters[charIndex].RecordAction(0 ,-1, -1);
+            characters[(characterIndex-1)].RecordAction(0 ,-1, -1);
             StartCoroutine(NextCharacter(.2f));
         }
-        else if(selectionType == InputStates.SELECTING)
+    }
+
+    public void PlayerProcess(int menuSelection, InputStates selectionType, int selection)
+    {
+        if(selectionType == InputStates.SELECTING)
         {
-            characters[charIndex].RecordAction(1 ,selection, -1);
+            battleMenu.SelectionOptionMenu(menuSelection);
+            characters[(characterIndex-1)].RecordAction(1 ,selection, -1);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.SKILLS)
         {
-            characters[charIndex].RecordAction(2 ,selection, selection);
+            battleMenu.SelectionOptionMenu(menuSelection);
+            characters[(characterIndex-1)].RecordAction(2 ,selection, selection);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.ITEMSELECTION)
         {
-            characters[charIndex].RecordAction(3 ,-1, selection);
+            battleMenu.ItemOptionMenu(menuSelection);
+            characters[(characterIndex-1)].RecordAction(3 ,-1, selection);
             StartCoroutine(NextCharacter(.2f));
         }
     }
@@ -143,22 +126,28 @@ public class PartyController : MonoBehaviour
         }
         else
         {
-            StartCoroutine(FinishTurn(.2f));
+            yield return new WaitForSeconds(delayTime);
+            characterIndex = 0;
+            inputOptions = InputStates.INACTIVE;
+            playerCamera.SwitchCamera(characterIndex);
+            battleMenu.FinishMenu();
+            gameManager.ActionPhase();
+            PlayerOutput();
         }
     }
 
-    IEnumerator FinishTurn(float delayTime)
+    void PlayerOutput() 
     {
-        yield return new WaitForSeconds(delayTime);
-        characterIndex = 0;
-        playerCamera.SwitchCamera(characterIndex);
-        inputOptions = InputStates.INACTIVE;
-        battleMenu.FinishMenu();
-        gameManager.ActionPhase();
-
         for(int i = 0; i < characters.Length; i++)
         {
             characters[i].PerformAction();
+            characters[i].ResetAction();
         }
+        Invoke("DumbFunctionInvoke", 2f);
+    }
+
+    void DumbFunctionInvoke()
+    {
+        gameManager.ReactionPhase();
     }
 }

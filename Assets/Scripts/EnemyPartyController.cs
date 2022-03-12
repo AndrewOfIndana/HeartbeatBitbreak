@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class EnemyPartyController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameManager gameManager;
+    public EnemyController[] enemies;
+
+    public void EnemyAction()
     {
-        
+        for(int i = 0; i < enemies.Length; i++)
+        {
+            enemies[i].RandomAction();
+            enemies[i].PerformAction();
+            enemies[i].ResetAction();
+        }
+        Invoke("DumbFunctionInvoke", 2f);
     }
 
-    // Update is called once per frame
-    void Update()
+    void DumbFunctionInvoke()
     {
-        
+        gameManager.InputPhase();
     }
 }
