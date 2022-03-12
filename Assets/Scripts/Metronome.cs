@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Metronome : MonoBehaviour
+public class Metronome : MonoBehaviour, SyncBeat
 {
     [Header("Points")]
     public Transform StartPoint;
@@ -37,10 +37,17 @@ public class Metronome : MonoBehaviour
 
     float speedPerSec;
 
+    private bool IsPlaying = false;
+
     // Start is called before the first frame update
     void Start()
     {
         MarkerTemplate.SetActive(false); //Keep marker template hidden visually
+        
+    }
+
+    public void StartBeat() {
+        this.IsPlaying = true;
         GenerateBeatSprites();
         GenerateMarkers(new List<int> { 0, 4, 8, 12 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
         ResetProgress();
@@ -117,6 +124,9 @@ public class Metronome : MonoBehaviour
 
     void Update()
     {
-        UpdateProgressBar();
+        if (this.IsPlaying)
+        {
+            UpdateProgressBar(); 
+        }
     }
 }
