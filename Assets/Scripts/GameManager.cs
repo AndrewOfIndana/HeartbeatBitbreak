@@ -8,9 +8,14 @@ public class GameManager : MonoBehaviour
     public PartyController party;
     public EnemyPartyController enemyParty;
     public enum GameStates {STARTING ,INPUT, ACTION, ENEMYACTION, WIN, LOSE}; //A new enumeration that will decide whether it is the player turn, when the player's party will attack and when the enemy will attack.
-    public GameStates battleState = GameStates.INPUT; //This is the actual state system that the game will keep track of.
+    public GameStates battleState; //This is the actual state system that the game will keep track of.
     
     public int groove = 1;
+
+    void Start() 
+    {
+        battleState = GameStates.INPUT;
+    }
 
     public void ActionPhase() 
     {
