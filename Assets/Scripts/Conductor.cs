@@ -63,6 +63,7 @@ public class Conductor : MonoBehaviour
 
     public void StartBeat() {
         //Load the AudioSource attached to the Conductor GameObject
+        
         musicSource = GetComponent<AudioSource>();
 
         //Calculate the number of seconds in each beat
@@ -74,6 +75,8 @@ public class Conductor : MonoBehaviour
         //Start the music
         musicSource.Play();
 
+        this.FinishedStartup = true;
+
     }
     void Awake()
     {
@@ -84,7 +87,7 @@ public class Conductor : MonoBehaviour
     void Update()
     {
         //calculate the loop position
-        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && !this.FinishedStartup)
+        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && this.FinishedStartup)
         {
             if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
             {
