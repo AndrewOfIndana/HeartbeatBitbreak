@@ -87,7 +87,7 @@ public class Conductor : MonoBehaviour
     void Update()
     {
         //calculate the loop position
-        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && this.FinishedStartup)
+        if (FinishedStartup)
         {
             if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
             {
@@ -108,7 +108,7 @@ public class Conductor : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && !this.FinishedStartup) {
+        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.STARTUP) {
             StartBeat();
         }
     }

@@ -37,18 +37,19 @@ public class Metronome : MonoBehaviour
 
     float speedPerSec;
 
-    private bool FinishedStartup = false;
+    private bool playing = false;
 
     // Start is called before the first frame update
     void Start()
     {
         MarkerTemplate.SetActive(false); //Keep marker template hidden visually
+        StartBeat();
 
         
     }
     
     public void StartBeat() {
-        this.FinishedStartup = true;
+        
         GenerateBeatSprites();
         GenerateMarkers(new List<int> { 0, 4, 8, 12 }); //TEST LINE, NEEDS TO BE CORRECTLY IMPLEMENTED LATER
         ResetProgress();
@@ -125,7 +126,7 @@ public class Metronome : MonoBehaviour
 
     void Update()
     {
-        if (this.FinishedStartup)
+        if (this.playing)
         {
             UpdateProgressBar(); 
         }
@@ -133,8 +134,8 @@ public class Metronome : MonoBehaviour
 
     void LateUpdate()
     {
-        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && !this.FinishedStartup) {
-            StartBeat();
+        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING) {
+            this.playing = true;
         }
     }
 }
