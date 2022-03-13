@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     public EnemyPartyController enemyParty;
     public enum GameStates {STARTING ,INPUT, ACTION, ENEMYACTION, WIN, LOSE}; //A new enumeration that will decide whether it is the player turn, when the player's party will attack and when the enemy will attack.
     public GameStates battleState; //This is the actual state system that the game will keep track of.
+
+
+    [Header("Time Sync Objects")]
     
     public int groove = 1;
 
@@ -33,4 +36,9 @@ public class GameManager : MonoBehaviour
         battleState = GameStates.INPUT;
         party.PlayerInputStart();
     }
+
+    public void SyncBeatObjects() {
+        
+    }
 }
+   

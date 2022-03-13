@@ -1,6 +1,6 @@
 //Sync beat
 
-interface SyncBeat{
+public interface SyncBeat{
 
 	void StartBeat();
 }
