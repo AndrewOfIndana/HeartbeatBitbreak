@@ -3331,7 +3331,7 @@ MonoBehaviour:
   musicSource: {fileID: 611900677}
   perfectHitWindow: 0.125
   hitWindow: 0
-  beatCheckOffSet: 0.3
+  beatCheckOffSet: 0
 --- !u!114 &611900681
 MonoBehaviour:
   m_ObjectHideFlags: 0
