@@ -17,7 +17,14 @@ public class GameManager : MonoBehaviour
 
     void Start() 
     {
+        Invoke("StartBattlePhase", 3f);
+    }
+
+    public void StartBattlePhase()
+    {
+        SyncBeat.Instance.StartBeat();
         battleState = GameStates.INPUT;
+        party.PlayerInputStart();
     }
 
     public void ActionPhase() 

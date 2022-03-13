@@ -17,7 +17,7 @@ public class PartyController : MonoBehaviour
 
     void Start()
     {
-        PlayerInputStart();
+        characterIndex = 0;
     }
 
     public void PlayerInputStart()
