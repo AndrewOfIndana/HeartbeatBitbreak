@@ -8,7 +8,7 @@ public class SyncBeat : MonoBehaviour
 
     
 
-    public enum State {WAITING, STARTUP, PLAYING }
+    public enum State {WAITING,PLAYING }
 
     
 
@@ -27,15 +27,10 @@ public class SyncBeat : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        if (this.CurrentState == State.STARTUP) {
-            this.CurrentState = State.PLAYING;
-        }
-    }
+    
 
     public void StartBeat() {
-        this.CurrentState = State.STARTUP;
+        this.CurrentState = State.PLAYING;
     }
 
     public State GetCurrentState() {

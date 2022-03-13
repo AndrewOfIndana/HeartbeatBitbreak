@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Conductor : MonoBehaviour, SyncBeat
+public class Conductor : MonoBehaviour
 {
     //the number of beats in each loop
     public float beatsPerLoop;
@@ -52,6 +52,8 @@ public class Conductor : MonoBehaviour, SyncBeat
     //Conductor instance
     public static Conductor instance;
 
+    private bool FinishedStartup = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -82,20 +84,30 @@ public class Conductor : MonoBehaviour, SyncBeat
     void Update()
     {
         //calculate the loop position
-        if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
+        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && !this.FinishedStartup)
         {
-            completedLoops++;
-            loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+            if (songPositionInBeats >= (completedLoops + 1) * beatsPerLoop)
+            {
+                completedLoops++;
+                loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+            }
+
+            loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
+
+            songPosition = (float)(AudioSettings.dspTime - dspSongTime - (firstBeatOffset * (completedLoops + 1)));
+            songPositionInBeats = songPosition / secPerBeat; 
         }
-
-        loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
-
-        songPosition = (float)(AudioSettings.dspTime - dspSongTime - (firstBeatOffset * (completedLoops+1)));
-        songPositionInBeats = songPosition / secPerBeat;
 
         //TEST
 
         //Debug.Log(Mathf.Floor(songPositionInBeats));
+    }
+
+    private void LateUpdate()
+    {
+        if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING && !this.FinishedStartup) {
+            StartBeat();
+        }
     }
 
     public int CheckHitTiming() {
