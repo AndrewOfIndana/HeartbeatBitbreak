@@ -4,10 +4,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public GameManager gameManager;
     public PlayerCharacter character;
+    public int healthPoints = 10;
+    public bool isAlive = true;
     public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
     public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
     public int itemIndex = -1; //records what item is going to be selected should be -1 to deselct
+
+    void Awake()
+    {
+        healthPoints = character.health;
+        isAlive = true;
+    }
 
     public void RecordAction(int action, int enemySelction, int itemSelection)
     {
@@ -22,13 +31,9 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Character defends");
         }
-        else if(this.actionIndex == 1) 
+        else if(this.actionIndex == 1 || this.actionIndex == 2) 
         {
-            Debug.Log("Character attacks enemy " + (this.attackIndex + 1));
-        }
-        else if(this.actionIndex == 2) 
-        {
-            Debug.Log("Character attacks enemy " + (this.attackIndex + 1));
+            gameManager.ExchangeDamage(this.actionIndex, this.attackIndex, this.character.GetAttack());
         }
         else if(this.actionIndex == 3) 
         {
@@ -43,4 +48,25 @@ public class PlayerController : MonoBehaviour
         this.attackIndex = -1;
         this.itemIndex = -1;
     }
+
+    public void Reaction(int action, Attack attack)
+    {
+        if(action == 0)
+        {
+            healthPoints -= (attack.GetDamage());
+        }
+        else if(action == 1)
+        {
+            healthPoints -= (attack.GetDamage() * 2);
+        }
+
+        if(healthPoints <= 0)
+        {
+            healthPoints = 0;
+            gameManager.KillConfirmed(true);
+            isAlive = false;
+            gameObject.SetActive(false);
+        }
+    }
+
 }

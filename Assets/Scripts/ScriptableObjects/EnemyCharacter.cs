@@ -6,7 +6,7 @@ using UnityEngine;
 public class EnemyCharacter : GenericCreature
 {
 
-    public override void  ReceiveAttack(Attack attack) {
+    public override void ReceiveAttack(Attack attack) {
 
         this.health -= attack.GetDamage();
 

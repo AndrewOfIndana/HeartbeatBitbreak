@@ -30,54 +30,59 @@ public class PartyController : MonoBehaviour
 
     public void PlayerInput(char playerIn)
     {
-        if (conducter.CheckHitTiming() > 0) { //CheckingHitTiming returns a 0 for a miss so any integer greater than that indicates a sucessful hit
-            if (characterIndex < 5) //if all four characters have gone, then this will not work
+        if (characters[(characterIndex-1)].isAlive == true) { 
+            if(conducter.CheckHitTiming() > 0) //CheckingHitTiming returns a 0 for a miss so any integer greater than that indicates a sucessful hit
             {
-                if (inputOptions == InputStates.BASIC)
+                if (characterIndex < 5) //if all four characters have gone, then this will not work
                 {
-                    if (playerIn == 'w')
+                    if (inputOptions == InputStates.BASIC)
                     {
-                        PlayerBasic(0, InputStates.SELECTING);
+                        if (playerIn == 'w')
+                        {
+                            PlayerBasic(0, InputStates.SELECTING);
+                        }
+                        else if (playerIn == 'a')
+                        {
+                            PlayerBasic(1, InputStates.ITEMSELECTION);
+                        }
+                        else if (playerIn == 's')
+                        {
+                            PlayerBasic(2, InputStates.DEFENDING);
+                        }
+                        else if (playerIn == 'd')
+                        {
+                            PlayerBasic(3, InputStates.SKILLS);
+                        }
                     }
-                    else if (playerIn == 'a')
+                    else if (inputOptions == InputStates.SELECTING || inputOptions == InputStates.SKILLS || inputOptions == InputStates.ITEMSELECTION)
                     {
-                        PlayerBasic(1, InputStates.ITEMSELECTION);
-                    }
-                    else if (playerIn == 's')
-                    {
-                        PlayerBasic(2, InputStates.DEFENDING);
-                    }
-                    else if (playerIn == 'd')
-                    {
-                        PlayerBasic(3, InputStates.SKILLS);
-                    }
-                }
-                else if (inputOptions == InputStates.SELECTING || inputOptions == InputStates.SKILLS || inputOptions == InputStates.ITEMSELECTION)
-                {
-                    if (playerIn == 'a')
-                    {
-                        PlayerProcess(0, inputOptions, 0);
-                    }
-                    else if (playerIn == 's')
-                    {
-                        PlayerProcess(1, inputOptions, 1);
-                    }
-                    else if (playerIn == 'd')
-                    {
-                        PlayerProcess(2, inputOptions, 2);
-                    }
-                    else if (playerIn == 'f')
-                    {
-                        PlayerProcess(3, inputOptions, 3);
+                        if (playerIn == 'a')
+                        {
+                            PlayerProcess(0, inputOptions, 0);
+                        }
+                        else if (playerIn == 's')
+                        {
+                            PlayerProcess(1, inputOptions, 1);
+                        }
+                        else if (playerIn == 'd')
+                        {
+                            PlayerProcess(2, inputOptions, 2);
+                        }
+                        else if (playerIn == 'f')
+                        {
+                            PlayerProcess(3, inputOptions, 3);
+                        }
                     }
                 }
             }
-
+            else
+            {
+            //TODO Implement the reseting of the flow meter
+            }
         } else
         {
-            //TODO Implement the reseting of the flow meter
+            StartCoroutine(NextCharacter(.2f));
         }
-
     }
 
     public void PlayerBasic(int menuSelection, InputStates selectionType)
@@ -149,5 +154,11 @@ public class PartyController : MonoBehaviour
     void DumbFunctionInvoke()
     {
         gameManager.ReactionPhase();
+    }
+
+    public void RecieveAttacks(int action, int index, Attack attack)
+    {
+        if(characters[index] != null)
+            characters[index].Reaction(action, attack);
     }
 }

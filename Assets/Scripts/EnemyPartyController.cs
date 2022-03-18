@@ -22,4 +22,10 @@ public class EnemyPartyController : MonoBehaviour
     {
         gameManager.InputPhase();
     }
+
+    public void RecieveAttacks(int action, int index, Attack attack)
+    {
+        if(enemies[index] != null)
+            enemies[index].Reaction(action, attack);
+    }
 }
