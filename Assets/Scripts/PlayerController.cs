@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public GameManager gameManager;
     public PlayerCharacter character;
-    public int healthPoints = 10;
+    
     public bool isAlive = true;
     public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
     public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        healthPoints = character.health;
+        character.ResetHealth();
         isAlive = true;
     }
 
@@ -51,18 +51,11 @@ public class PlayerController : MonoBehaviour
 
     public void Reaction(int action, Attack attack)
     {
-        if(action == 0)
-        {
-            healthPoints -= (attack.GetDamage());
-        }
-        else if(action == 1)
-        {
-            healthPoints -= (attack.GetDamage() * 2);
-        }
+        this.character.ReceiveAttack(attack);
 
-        if(healthPoints <= 0)
+        if(character.health <= 0)
         {
-            healthPoints = 0;
+            
             gameManager.KillConfirmed(true);
             isAlive = false;
             gameObject.SetActive(false);
