@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(this.actionIndex == 1 || this.actionIndex == 2) 
         {
-            gameManager.ExchangeDamage(this.actionIndex, this.attackIndex, this.character.GetAttack());
+            gameManager.ExchangeDamage(this.actionIndex, this.attackIndex, this.character.GetAttack(gameManager.groove));
         }
         else if(this.actionIndex == 3) 
         {
