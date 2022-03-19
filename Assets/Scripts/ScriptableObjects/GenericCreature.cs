@@ -9,7 +9,12 @@ public abstract class GenericCreature : ScriptableObject
     public int health; //Number of damage character can take before dying
     public int atk;    //Number of damage units done on correct hit
     public int def;    //Value the the Attack.ToHit has to meet or hit in in order to inflict damage
+    public int max_health;
 
     public abstract void ReceiveAttack(Attack attack);
     public abstract Attack GetAttack();
+
+    public void ResetHealth() {
+        this.health = this.max_health;    
+    }
 }
