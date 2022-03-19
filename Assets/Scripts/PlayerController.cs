@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        character.ResetHealth();
+        this.character.ResetHealth();
         isAlive = true;
     }
 
@@ -23,17 +23,19 @@ public class PlayerController : MonoBehaviour
         this.actionIndex = action;
         this.attackIndex = enemySelction;
         this.itemIndex = itemSelection;
+        this.character.ResetDef();
+        this.character.ResetAtk();
     }
 
     public void PerformAction()
     {
         if(this.actionIndex == 0) //Defend
         {
-            Debug.Log("Character defends");
+            this.character.DefenseBoost();
         }
         else if(this.actionIndex == 1 || this.actionIndex == 2) 
         {
-            gameManager.ExchangeDamage(this.actionIndex, this.attackIndex, this.character.GetAttack(gameManager.groove));
+            gameManager.ExchangeDamage(this.attackIndex, this.character.GetAttack(gameManager.groove));
         }
         else if(this.actionIndex == 3) 
         {
@@ -49,7 +51,7 @@ public class PlayerController : MonoBehaviour
         this.itemIndex = -1;
     }
 
-    public void Reaction(int action, Attack attack)
+    public void Reaction(Attack attack)
     {
         this.character.ReceiveAttack(attack);
 

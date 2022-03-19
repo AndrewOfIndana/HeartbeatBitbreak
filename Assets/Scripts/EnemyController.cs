@@ -28,7 +28,7 @@ public class EnemyController : MonoBehaviour
     
     public void PerformAction()
     {
-        gameManager.ExchangeDamage(this.actionIndex, this.attackIndex, this.enemy.GetAttack());
+        gameManager.ExchangeDamage(this.attackIndex, this.enemy.GetAttack());
     }
 
     public void ResetAction() 
@@ -38,7 +38,7 @@ public class EnemyController : MonoBehaviour
         this.attackIndex = -1;
     }
 
-    public void Reaction(int action, Attack attack)
+    public void Reaction(Attack attack)
     {
         this.enemy.ReceiveAttack(attack);
 

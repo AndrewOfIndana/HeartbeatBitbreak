@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5dd2bfba68914cf4c8e26627679d3418, type: 3}
+  m_Name: TestChara4
+  m_EditorClassIdentifier: 
+  health: 10
+  atk: 5
+  def: 5
+  max_health: 10
+  max_atk: 5
+  max_def: 5

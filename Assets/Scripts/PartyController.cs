@@ -7,7 +7,6 @@ public class PartyController : MonoBehaviour
     public GameManager gameManager;
     public BattleMenuController battleMenu;
     public Conductor conducter;
-    public PlayerCameras playerCamera; //Needed for the camera to move to the next player
     public PlayerController[] characters;
 
     public enum InputStates {INACTIVE, BASIC, DEFENDING, SKILLS, SELECTING, ITEMSELECTION} //A enum containing each and every input option based on states
@@ -24,7 +23,6 @@ public class PartyController : MonoBehaviour
     {
         characterIndex = 1;
         battleMenu.ResetMenu();
-        playerCamera.SwitchCamera(characterIndex);
         inputOptions = InputStates.BASIC;//sets inputoption to basic by default
     }
 
@@ -123,7 +121,6 @@ public class PartyController : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
         characterIndex++;
-        playerCamera.SwitchCamera(characterIndex);
 
         if (characterIndex < 5) {
             inputOptions = InputStates.BASIC;
@@ -134,7 +131,6 @@ public class PartyController : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
             characterIndex = 0;
             inputOptions = InputStates.INACTIVE;
-            playerCamera.SwitchCamera(characterIndex);
             battleMenu.FinishMenu();
             gameManager.ActionPhase();
             PlayerOutput();
@@ -156,9 +152,9 @@ public class PartyController : MonoBehaviour
         gameManager.ReactionPhase();
     }
 
-    public void RecieveAttacks(int action, int index, Attack attack)
+    public void RecieveAttacks(int index, Attack attack)
     {
         if(characters[index] != null)
-            characters[index].Reaction(action, attack);
+            characters[index].Reaction(attack);
     }
 }

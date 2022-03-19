@@ -45,15 +45,15 @@ public class GameManager : MonoBehaviour
         party.PlayerInputStart();
     }
 
-    public void ExchangeDamage(int action, int index, Attack attack) 
+    public void ExchangeDamage(int index, Attack attack) 
     {
         if(battleState == GameStates.ACTION) 
         {
-            enemyParty.RecieveAttacks(action, index, attack);
+            enemyParty.RecieveAttacks(index, attack);
         }
         else if(battleState == GameStates.ENEMYACTION) 
         {
-            party.RecieveAttacks(action, index, attack);
+            party.RecieveAttacks(index, attack);
         }
     }
 
