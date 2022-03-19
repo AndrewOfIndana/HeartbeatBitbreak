@@ -18,3 +18,4 @@ MonoBehaviour:
   max_health: 10
   max_atk: 5
   max_def: 5
+  playerSkill: 2

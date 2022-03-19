@@ -147,6 +147,24 @@ public class PartyController : MonoBehaviour
         Invoke("DumbFunctionInvoke", 2f);
     }
 
+    public void PartyEffect(int skill)
+    {
+        for(int i = 0; i < characters.Length; i++)
+        {
+            if(characters[i] != null)
+            {
+                if(skill == 2)
+                {
+                    characters[i].character.Heal();
+                }
+                else if(skill == 4)
+                {
+                    characters[i].character.DefenseBoost();
+                }
+            }
+        }
+    }
+
     void DumbFunctionInvoke()
     {
         gameManager.ReactionPhase();

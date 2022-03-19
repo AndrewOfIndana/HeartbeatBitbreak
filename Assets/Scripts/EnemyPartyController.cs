@@ -23,9 +23,24 @@ public class EnemyPartyController : MonoBehaviour
         gameManager.InputPhase();
     }
 
-    public void RecieveAttacks(int index, Attack attack)
+    public void RecieveAttacks(bool isMulti, int index, Attack attack)
     {
-        if(enemies[index] != null)
-            enemies[index].Reaction(attack);
+        if(isMulti)
+        {
+            for(int i = 0; i < enemies.Length; i++)
+            {
+                if(enemies[i] != null)
+                {
+                    enemies[i].Reaction(attack);
+                }
+            }
+        }
+        else if(!isMulti)
+        {
+            if(enemies[index] != null)
+            {
+                enemies[index].Reaction(attack);
+            }
+        }
     }
 }

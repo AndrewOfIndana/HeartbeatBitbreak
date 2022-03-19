@@ -28,9 +28,25 @@ public abstract class GenericCreature : ScriptableObject
         this.def = this.max_def;    
     }
 
+    public void Heal() {
+        this.health = this.health + (this.max_health / 2);
+
+        if(this.health > this.max_health)
+        {
+            this.health = this.max_health;
+        }
+    }
+
     public void AttackBoost() {
         this.atk = this.atk * 2;
     }
+    public void AttackSpread() {
+        this.atk = this.atk / 2;
+    }
+    public void AttackWeak() {
+        this.atk = this.atk / 3;
+    }
+
     public void DefenseBoost() {
         this.def = this.def * 2;
     }

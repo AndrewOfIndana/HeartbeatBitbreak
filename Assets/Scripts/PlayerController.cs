@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameManager gameManager;
+    public PartyController party;
     public PlayerCharacter character;
     
     public bool isAlive = true;
@@ -33,9 +34,34 @@ public class PlayerController : MonoBehaviour
         {
             this.character.DefenseBoost();
         }
-        else if(this.actionIndex == 1 || this.actionIndex == 2) 
+        else if(this.actionIndex == 1) 
         {
-            gameManager.ExchangeDamage(this.attackIndex, this.character.GetAttack(gameManager.groove));
+            gameManager.ExchangeDamage(false, this.attackIndex, this.character.GetAttack(gameManager.groove));
+        }
+        else if(this.actionIndex == 2)
+        {
+            if(character.playerSkill == 1) //great attack
+            {
+                this.character.AttackBoost();
+                gameManager.ExchangeDamage(false, this.attackIndex, this.character.GetAttack(gameManager.groove));
+            }
+            if(character.playerSkill == 2) //heal all
+            {
+                party.PartyEffect(character.playerSkill);
+                this.character.AttackWeak();
+                gameManager.ExchangeDamage(false, this.attackIndex, this.character.GetAttack(gameManager.groove));
+            }
+            if(character.playerSkill == 3)  //attack all
+            {
+                this.character.AttackSpread();
+                gameManager.ExchangeDamage(true, this.attackIndex, this.character.GetAttack(gameManager.groove));
+            }
+            if(character.playerSkill == 4) //def all
+            {
+                this.character.AttackWeak();
+                party.PartyEffect(character.playerSkill);
+                gameManager.ExchangeDamage(false, this.attackIndex, this.character.GetAttack(gameManager.groove));
+            }
         }
         else if(this.actionIndex == 3) 
         {
@@ -57,7 +83,6 @@ public class PlayerController : MonoBehaviour
 
         if(character.health <= 0)
         {
-            
             gameManager.KillConfirmed(true);
             isAlive = false;
             gameObject.SetActive(false);

@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerCharacter", menuName = "ScriptableObjects/PlayerDataClass", order = 0)]
 public class PlayerCharacter : GenericCreature
 {
+    public int playerSkill;
+    
     public override void ReceiveAttack(Attack attack)
     {
         if (attack.GetToHit() >= this.def) {
