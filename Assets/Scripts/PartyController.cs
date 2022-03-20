@@ -157,6 +157,11 @@ public class PartyController : MonoBehaviour
                 {
                     characters[i].character.Heal();
                 }
+                else if(skill == 3)
+                {
+                    characters[i].character.AttackBoost();
+                }
+
                 else if(skill == 4)
                 {
                     characters[i].character.DefenseBoost();

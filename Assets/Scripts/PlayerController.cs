@@ -5,13 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameManager gameManager;
+    public ItemManager itemManager;
     public PartyController party;
     public PlayerCharacter character;
     
     public bool isAlive = true;
-    public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
-    public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
-    public int itemIndex = -1; //records what item is going to be selected should be -1 to deselct
+    private int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
+    private int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
+    private int itemIndex = -1; //records what item is going to be selected should be -1 to deselct
 
     void Awake()
     {
@@ -26,6 +27,11 @@ public class PlayerController : MonoBehaviour
         this.itemIndex = itemSelection;
         this.character.ResetDef();
         this.character.ResetAtk();
+        
+        if(!(itemSelection == -1))
+        {
+            itemManager.EmptyItemName(itemSelection);
+        }
     }
 
     public void PerformAction()
@@ -65,7 +71,14 @@ public class PlayerController : MonoBehaviour
         }
         else if(this.actionIndex == 3) 
         {
-            Debug.Log("Character uses item " + (this.itemIndex + 1));
+            ItemInstance usedItem = itemManager.SelectItem(this.itemIndex);
+            bool doesItemExist = usedItem.ValidateItem();
+
+            if(doesItemExist)
+            {
+                party.PartyEffect(usedItem.itemStats.itemNo);
+                usedItem.ConsumeItem();
+            }
         }
     }
 
