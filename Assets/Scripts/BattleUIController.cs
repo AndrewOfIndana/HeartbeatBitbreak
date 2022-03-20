@@ -1,13 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleUIController : MonoBehaviour
 {
-    //THIS SCRIPT MANAGES THE UI FOR BATTLE, FOR EACH CHARACTER'S HEALTH, THE GROOVE METER AND THE METRONOME
-    [Header("Framework")]
-    public GameManager gameManager; //Needed to know when to reset metronome
-    public Conductor conducter; //Needed for the metronome
-    //public PartyController //Needed for groove
-    //public PlayerController[] partyMembers; //Need for health
+    public GameObject battleUI;
+    public GameObject partyUI;
+    public PlayerController[] characters;
+
+    [Header("Prefabs")]
+    public Sprite fullHeart;
+    public Sprite emptyHeart;
+
+    [System.Serializable]
+    public class status 
+    {
+        public int maxHealth;
+        public int currentHealth;
+        public Image[] heartNotes;
+    }
+
+    [Header("CharacterStatus")]
+    public status[] characterStatus;
+
+    public void UpdateHealth()
+    {
+        for(int cs = 0; cs < characterStatus.Length; cs++)
+        {
+            characterStatus[cs].maxHealth = characters[cs].character.max_health;
+            characterStatus[cs].currentHealth = characters[cs].character.health;
+
+            for(int i = 0; i < characterStatus[cs].heartNotes.Length; i++)
+            {
+                if(i < characterStatus[cs].currentHealth)
+                {
+                    characterStatus[cs].heartNotes[i].sprite = fullHeart;
+                }
+                else
+                {
+                    characterStatus[cs].heartNotes[i].sprite = emptyHeart;
+                }
+            }
+        }
+    }
+
+    void Awake()
+    {
+        battleUI.SetActive(false);
+        partyUI.SetActive(false);
+    }
+
+    public void SwitchUI(bool isInput)
+    {
+        if(isInput)
+        {
+            battleUI.SetActive(true);
+            partyUI.SetActive(false);
+        }
+        if(!isInput)
+        {
+            battleUI.SetActive(false);
+            partyUI.SetActive(true);
+        }
+    }
 }

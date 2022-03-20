@@ -5,6 +5,7 @@ using UnityEngine;
 public class PartyController : MonoBehaviour
 {
     public GameManager gameManager;
+    public BattleUIController battleUI;
     public BattleMenuController battleMenu;
     public Conductor conducter;
     public PlayerController[] characters;
@@ -22,6 +23,7 @@ public class PartyController : MonoBehaviour
     public void PlayerInputStart()
     {
         characterIndex = 1;
+        battleUI.SwitchUI(true);
         battleMenu.ResetMenu();
         inputOptions = InputStates.BASIC;//sets inputoption to basic by default
     }
@@ -124,6 +126,7 @@ public class PartyController : MonoBehaviour
 
         if (characterIndex < 5) {
             inputOptions = InputStates.BASIC;
+            battleUI.SwitchUI(true);
             battleMenu.ResetMenu();
         }
         else
@@ -132,6 +135,7 @@ public class PartyController : MonoBehaviour
             characterIndex = 0;
             inputOptions = InputStates.INACTIVE;
             battleMenu.FinishMenu();
+            battleUI.SwitchUI(false);
             gameManager.ActionPhase();
             PlayerOutput();
         }

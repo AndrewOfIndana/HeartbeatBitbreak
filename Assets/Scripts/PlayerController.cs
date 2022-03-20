@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     public GameManager gameManager;
     public ItemManager itemManager;
+    public BattleUIController battleUI;
     public PartyController party;
     public PlayerCharacter character;
     
@@ -56,6 +57,7 @@ public class PlayerController : MonoBehaviour
                 party.PartyEffect(character.playerSkill);
                 this.character.AttackWeak();
                 gameManager.ExchangeDamage(false, this.attackIndex, this.character.GetAttack(gameManager.groove));
+                battleUI.UpdateHealth();
             }
             if(character.playerSkill == 3)  //attack all
             {
@@ -78,6 +80,7 @@ public class PlayerController : MonoBehaviour
             {
                 party.PartyEffect(usedItem.itemStats.itemNo);
                 usedItem.ConsumeItem();
+                battleUI.UpdateHealth();
             }
         }
     }
@@ -88,11 +91,13 @@ public class PlayerController : MonoBehaviour
         this.actionIndex = -1;
         this.attackIndex = -1;
         this.itemIndex = -1;
+        battleUI.UpdateHealth();
     }
 
     public void Reaction(Attack attack)
     {
         this.character.ReceiveAttack(attack);
+        battleUI.UpdateHealth();
 
         if(character.health <= 0)
         {

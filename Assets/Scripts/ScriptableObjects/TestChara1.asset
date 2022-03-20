@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dd2bfba68914cf4c8e26627679d3418, type: 3}
   m_Name: TestChara1
   m_EditorClassIdentifier: 
-  health: 10
+  health: 5
   atk: 5
   def: 5
   max_health: 10

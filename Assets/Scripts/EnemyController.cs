@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public GameManager gameManager;
     public EnemyCharacter enemy;
-    
+
     public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
     public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
 
