@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class BattleUIController : MonoBehaviour
 {
-    public GameObject battleUI;
-    public GameObject partyUI;
+    public CanvasGroup battleUI;
+    public CanvasGroup partyUI;
     public PlayerController[] characters;
 
     [Header("Prefabs")]
     public Sprite fullHeart;
+    public Sprite halfHeart;
     public Sprite emptyHeart;
 
     [System.Serializable]
@@ -31,15 +32,22 @@ public class BattleUIController : MonoBehaviour
             characterStatus[cs].maxHealth = characters[cs].character.max_health;
             characterStatus[cs].currentHealth = characters[cs].character.health;
 
-            for(int i = 0; i < characterStatus[cs].heartNotes.Length; i++)
+            for(int i = 0; i < characterStatus[cs].heartNotes.Length*2; i++)
             {
-                if(i < characterStatus[cs].currentHealth)
+                if((i-1) < characterStatus[cs].currentHealth)
                 {
-                    characterStatus[cs].heartNotes[i].sprite = fullHeart;
+                    if(i == characterStatus[cs].currentHealth)
+                    {
+                        characterStatus[cs].heartNotes[i/2].sprite = halfHeart;
+                    }
+                    else
+                    {
+                        characterStatus[cs].heartNotes[i/2].sprite = fullHeart;
+                    }
                 }
                 else
                 {
-                    characterStatus[cs].heartNotes[i].sprite = emptyHeart;
+                    characterStatus[cs].heartNotes[i/2].sprite = emptyHeart;
                 }
             }
         }
@@ -47,21 +55,21 @@ public class BattleUIController : MonoBehaviour
 
     void Awake()
     {
-        battleUI.SetActive(false);
-        partyUI.SetActive(false);
+        battleUI.alpha = 0;
+        partyUI.alpha = 0;
     }
 
     public void SwitchUI(bool isInput)
-    {
+    {        
         if(isInput)
         {
-            battleUI.SetActive(true);
-            partyUI.SetActive(false);
+            battleUI.alpha = 1f;
+            partyUI.alpha = 0;
         }
         if(!isInput)
         {
-            battleUI.SetActive(false);
-            partyUI.SetActive(true);
+            battleUI.alpha = 0;
+            partyUI.alpha = 1f;
         }
     }
 }

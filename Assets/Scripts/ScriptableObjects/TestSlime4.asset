@@ -16,6 +16,6 @@ MonoBehaviour:
   atk: 2
   def: 5
   max_health: 20
-  max_atk: 2
+  max_atk: 1
   max_def: 5
   CritChance: 30
