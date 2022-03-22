@@ -108,7 +108,7 @@ public class PartyController : MonoBehaviour
         else if(selectionType == InputStates.SKILLS)
         {
             battleMenu.SelectionOptionMenu(menuSelection);
-            characters[(characterIndex-1)].RecordAction(2 ,selection, selection);
+            characters[(characterIndex-1)].RecordAction(2 ,selection, -1);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == InputStates.ITEMSELECTION)
@@ -132,7 +132,7 @@ public class PartyController : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(delayTime);
-            characterIndex = 0;
+            characterIndex = 1;
             inputOptions = InputStates.INACTIVE;
             battleMenu.FinishMenu();
             battleUI.SwitchUI(false);

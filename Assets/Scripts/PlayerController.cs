@@ -99,10 +99,10 @@ public class PlayerController : MonoBehaviour
         this.character.ReceiveAttack(attack);
         battleUI.UpdateHealth();
 
-        if(character.health <= 0)
+        if((character.health <= 0) && this.isAlive)
         {
             gameManager.KillConfirmed(true);
-            isAlive = false;
+            this.isAlive = false;
             gameObject.SetActive(false);
         }
     }

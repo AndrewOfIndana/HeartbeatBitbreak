@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,7 +11,11 @@ public class GameManager : MonoBehaviour
     public enum GameStates {STARTING ,INPUT, ACTION, ENEMYACTION, WIN, LOSE}; //A new enumeration that will decide whether it is the player turn, when the player's party will attack and when the enemy will attack.
     public GameStates battleState; //This is the actual state system that the game will keep track of.
     public int playerDeaths = 0;
-    private int enemyDeaths = 0;
+    public int enemyDeaths = 0;
+    public CanvasGroup winScreen;
+    public CanvasGroup loseScreen;
+    float timer = 0;
+    public bool isGameOver = false;
 
     [Header("Time Sync Objects")]
     
@@ -23,26 +28,38 @@ public class GameManager : MonoBehaviour
 
     public void StartBattlePhase()
     {
-        SyncBeat.Instance.StartBeat();
-        battleState = GameStates.INPUT;
-        party.PlayerInputStart();
+        if(!isGameOver)
+        {
+            SyncBeat.Instance.StartBeat();
+            battleState = GameStates.INPUT;
+            party.PlayerInputStart();
+        }
     }
 
     public void ActionPhase() 
     {
-        battleState = GameStates.ACTION;
+        if(!isGameOver)
+        {
+            battleState = GameStates.ACTION;
+        }
     }
 
     public void ReactionPhase()
     {
-        battleState = GameStates.ENEMYACTION;
-        enemyParty.EnemyAction();
+        if(!isGameOver)
+        {
+            battleState = GameStates.ENEMYACTION;
+            enemyParty.EnemyAction();
+        }
     }
 
     public void InputPhase()
     {
-        battleState = GameStates.INPUT;
-        party.PlayerInputStart();
+        if(!isGameOver)
+        {
+            battleState = GameStates.INPUT;
+            party.PlayerInputStart();
+        }
     }
 
     public void ExchangeDamage(bool isMulti, int index, Attack attack) 
@@ -62,15 +79,45 @@ public class GameManager : MonoBehaviour
         if(isPlayer)
         {
             playerDeaths++;
+            if(playerDeaths >= 4)
+            {
+                isGameOver = true;
+                battleState = GameStates.LOSE;
+            }
         }
         else
         {
             enemyDeaths++;
             if(enemyDeaths >= 4)
             {
-                Debug.Log("YOU WIN");
+                isGameOver = true;
                 battleState = GameStates.WIN;
             }
+        }
+    }
+
+    void Update()
+    {
+        if(battleState == GameStates.WIN)
+        {
+            battleState = GameStates.WIN;
+            BattleResults(winScreen);
+        }
+        else if(battleState == GameStates.LOSE)
+        {
+            battleState = GameStates.LOSE;
+            BattleResults(loseScreen);
+        }
+    }
+
+    void BattleResults(CanvasGroup endingScreen)
+    {
+        timer += Time.deltaTime;
+        endingScreen.alpha = timer / 1f;
+
+        if(timer > 2f)
+        {
+            Application.Quit();
         }
     }
 }

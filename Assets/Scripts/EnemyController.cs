@@ -6,7 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public GameManager gameManager;
     public EnemyCharacter enemy;
-
+    public bool isDead = false;
     public int actionIndex = -1;//records what actions is about to be taken should be -1 to deselct
     public int attackIndex = -1; //record of what enemy is going to be attack should be -1 to deselct
 
@@ -42,9 +42,9 @@ public class EnemyController : MonoBehaviour
     {
         this.enemy.ReceiveAttack(attack);
 
-        if(enemy.health <= 0)
+        if((enemy.health <= 0) && !this.isDead)
         {
-            
+            this.isDead = true;
             gameManager.KillConfirmed(false);
             Destroy(this.gameObject);
         }
