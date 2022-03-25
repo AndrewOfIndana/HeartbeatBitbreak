@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +13,21 @@ public class GameManager : MonoBehaviour
     public GameStates battleState; //This is the actual state system that the game will keep track of.
     public int playerDeaths = 0;
     public int enemyDeaths = 0;
+    public CanvasGroup beginningScreen;
+    public TextMeshProUGUI countDownTimerTxt;
     public CanvasGroup winScreen;
     public CanvasGroup loseScreen;
     float timer = 0;
+    float countDownTimer;
     public bool isGameOver = false;
 
     [Header("Time Sync Objects")]
     
     public int groove = 1;
 
-    void Start() 
+    void Start()
     {
+        countDownTimer = 3f;
         Invoke("StartBattlePhase", 3f);
     }
 
@@ -30,6 +35,7 @@ public class GameManager : MonoBehaviour
     {
         if(!isGameOver)
         {
+            beginningScreen.alpha = 0;
             SyncBeat.Instance.StartBeat();
             battleState = GameStates.INPUT;
             party.PlayerInputStart();
@@ -98,6 +104,12 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if(countDownTimer > 1)
+        {
+            countDownTimer -= Time.deltaTime;
+            countDownTimerTxt.text = countDownTimer.ToString("0");;
+        }
+
         if(battleState == GameStates.WIN)
         {
             battleState = GameStates.WIN;

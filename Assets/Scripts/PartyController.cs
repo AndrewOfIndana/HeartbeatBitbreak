@@ -15,11 +15,6 @@ public class PartyController : MonoBehaviour
     public InputStates inputOptions; //decleration of the current input option avaliable
     public int characterIndex;
 
-    void Start()
-    {
-        characterIndex = 0;
-    }
-
     public void PlayerInputStart()
     {
         characterIndex = 1;
