@@ -497,6 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 432954612}
   enemy: {fileID: 11400000, guid: 7e81b5ca9e790f04cb13d4942e273b02, type: 2}
+  isDead: 0
   actionIndex: -1
   attackIndex: -1
 --- !u!4 &91968820
@@ -1776,8 +1777,12 @@ MonoBehaviour:
   enemyParty: {fileID: 2079674326}
   battleState: 0
   playerDeaths: 0
+  enemyDeaths: 0
+  beginningScreen: {fileID: 0}
+  countDownTimerTxt: {fileID: 0}
   winScreen: {fileID: 1102780670}
   loseScreen: {fileID: 588984105}
+  isGameOver: 0
   groove: 1
 --- !u!4 &432954613
 Transform:
@@ -3405,11 +3410,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9207533905478376708, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -6.83
+      value: -6.02
       objectReference: {fileID: 0}
     - target: {fileID: 9207533905478376708, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.68
+      value: -1.12
       objectReference: {fileID: 0}
     - target: {fileID: 9207533905478376708, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -8768,6 +8773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 432954612}
   enemy: {fileID: 11400000, guid: ffbfee0050513cd4f8029bee17990eb9, type: 2}
+  isDead: 0
   actionIndex: -1
   attackIndex: -1
 --- !u!4 &1452196466
@@ -9404,6 +9410,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 432954612}
   enemy: {fileID: 11400000, guid: e69e584758ffeec44a4f1f6d0df0e854, type: 2}
+  isDead: 0
   actionIndex: -1
   attackIndex: -1
 --- !u!4 &1614234464
@@ -10656,6 +10663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 432954612}
   enemy: {fileID: 11400000, guid: 05d46655e0efd644d8986e99bc6aa31b, type: 2}
+  isDead: 0
   actionIndex: -1
   attackIndex: -1
 --- !u!4 &1819157855
