@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         countDownTimer = 3f;
-        Invoke("StartBattlePhase", 3f);
+        Invoke("StartBattlePhase", countDownTimer);
     }
 
     public void StartBattlePhase()
@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(countDownTimer > 1)
+        if(countDownTimer > 0)
         {
             countDownTimer -= Time.deltaTime;
             countDownTimerTxt.text = countDownTimer.ToString("0");;

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 078949289db8b41469cb8cb92fbe26ff, type: 3}
   m_Name: TestSlime3
   m_EditorClassIdentifier: 
-  health: 1
+  health: 20
   atk: 3
   def: 5
-  max_health: 1
+  max_health: 20
   max_atk: 3
   max_def: 5
   CritChance: 30
