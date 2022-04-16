@@ -2,31 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInput : MonoBehaviour
+public class PlayerInputSystem : MonoBehaviour
 {
-    private PartyController party;
+    private PlayerParty party;
 
     void Awake() 
     {
-        party = GetComponent<PartyController>();
+        party = GetComponent<PlayerParty>();
     }
+
     void Update()
     {
         if(Input.GetKeyDown("w"))
         {
-            party.PlayerInput('w');
+            party.CurrentInput('w');
         }
         else if(Input.GetKeyDown("a"))
         {
-            party.PlayerInput('a');
+            party.CurrentInput('a');
         }
         else if(Input.GetKeyDown("s"))
         {
-            party.PlayerInput('s');
+            party.CurrentInput('s');
         }
         else if(Input.GetKeyDown("d"))
         {
-            party.PlayerInput('d');
+            party.CurrentInput('d');
         }
     }
 }
