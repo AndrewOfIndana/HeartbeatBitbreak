@@ -17,9 +17,11 @@ public class BattleSystem : MonoBehaviour
     [Header("Battle References")]
     public PlayerParty playerParty;
     public EnemyParty enemyParty;
-    List<PlayerUnit> playerUnits = new List<PlayerUnit>();
-    List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
+    public List<PlayerUnit> playerUnits = new List<PlayerUnit>();
+    public List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
 
+    public int groove = 1;
+    //      START FUNCTIONS       \\
     void Start() 
     {
         state = BattleState.START;
@@ -41,24 +43,44 @@ public class BattleSystem : MonoBehaviour
         PlayerInput();
     }
 
+    //      BATTLELOOP FUNCTIONS       \\
     void PlayerInput()
     {
         playerParty.PrimeInput();
     }
     public IEnumerator PlayerTurn()
     {
-        //playerParty.UpdatePlayerAction();
-        //enemyParty.UpdateEnemyAction();
+        for (int i = 0; i < playerUnits.Count; i++)
+        {
+            playerParty.PerformAction(i);
+            yield return new WaitForSeconds(2f);
+        }
         yield return new WaitForSeconds(2f);
         state = BattleState.ENEMYTURN;
         StartCoroutine(EnemyTurn());
     }
     IEnumerator EnemyTurn()
     {
-        //playerParty.UpdatePlayerAction();
-        //enemyParty.UpdateEnemyAction();
+        for (int i = 0; i < enemyUnits.Count; i++)
+        {
+            enemyParty.PerformAction(i, playerUnits.Count);
+            yield return new WaitForSeconds(2f);
+        }
         yield return new WaitForSeconds(2f);
         state = BattleState.PLAYERINPUT;
         PlayerInput();
+    }
+
+    //      DAMAGE EXCHANGE FUNCTIONS       \\
+    public void ExchangeDamage(int index, Attack attack, bool isMulti)
+    {
+        if(state == BattleState.PLAYERTURN) 
+        {
+            enemyParty.Reaction(index, attack, isMulti);
+        }
+        else if(state == BattleState.ENEMYTURN) 
+        {
+            playerParty.Reaction(index, attack, isMulti);
+        }
     }
 }

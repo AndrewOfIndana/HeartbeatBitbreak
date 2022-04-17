@@ -126,4 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86b7dc57c4bd8046b6b210ef02384f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 05d46655e0efd644d8986e99bc6aa31b, type: 2}
+  enemyStats: {fileID: 11400000, guid: 05d46655e0efd644d8986e99bc6aa31b, type: 2}
+  isAlive: 0
+  actionIndex: 0
+  attackIndex: 0

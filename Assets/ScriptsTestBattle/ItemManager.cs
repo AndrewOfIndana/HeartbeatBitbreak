@@ -21,7 +21,7 @@ public class ItemManager : MonoBehaviour
 
     public void EmptyItemName(int select)
     {
-        itemNamesTxt[select].text = "empty";
+        //itemNamesTxt[select].text = "empty";
     }
 
     void ResetItemName()

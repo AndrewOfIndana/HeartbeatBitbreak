@@ -44,7 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b935933ce0efa2a4a8131fb846f8babc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 01125728a75c11d4a9932fec43c93b70, type: 2}
+  playerStats: {fileID: 11400000, guid: ffa25c650b21d384f86bde7e9a775234, type: 2}
+  isAlive: 0
+  actionIndex: 0
+  attackIndex: 0
+  itemIndex: 0
 --- !u!1001 &431006010394663491
 PrefabInstance:
   m_ObjectHideFlags: 0

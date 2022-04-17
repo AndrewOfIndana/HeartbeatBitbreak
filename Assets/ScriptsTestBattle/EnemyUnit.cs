@@ -4,17 +4,26 @@ using UnityEngine;
 
 public class EnemyUnit : MonoBehaviour
 {
-    public EnemyCharacter character;
+    [Header("External References")]
+    public EnemyCharacter enemyStats;
 
-    // Start is called before the first frame update
-    void Start()
+    [Header("Game Variables")]
+    public bool isAlive;
+    public EnemyActions actionIndex;
+    public int attackIndex;
+
+    const int deselect = -1;
+
+    void Awake()
     {
-        
+        this.enemyStats.ResetHealth();
+        this.isAlive = true;
+        this.actionIndex = EnemyActions.WAITING;
+        this.attackIndex = deselect;
     }
-
-    // Update is called once per frame
-    void Update()
+    public void ResetAction() 
     {
-        
+        this.actionIndex = EnemyActions.WAITING;
+        this.attackIndex = deselect;
     }
 }
