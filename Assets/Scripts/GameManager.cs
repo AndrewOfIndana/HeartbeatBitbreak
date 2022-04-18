@@ -130,6 +130,11 @@ public class GameManager : MonoBehaviour
             state = BattleState.LOST;
             BattleResults(loseScreen);
         }
+        if(Input.GetKeyDown (KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
     }
     public void KillConfirmed(bool isPlayer)
     {
