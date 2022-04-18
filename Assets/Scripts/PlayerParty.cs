@@ -8,9 +8,11 @@ public enum Actions { WAITING, DEFEND, SKILLS, ATTACK, ITEM }
 public class PlayerParty : MonoBehaviour
 {
     [Header("External References")]
-    public BattleSystem battleSystem;
+    public GameManager gameManager;
     public Conductor conductor;
     public ItemManager itemManager;
+    public BattleMenuController battleMenu;
+    public BattleUIController battleUI;
 
     private List<PlayerUnit> characters = new List<PlayerUnit>();
     private PartyState battleOptions;
@@ -28,6 +30,8 @@ public class PlayerParty : MonoBehaviour
     {
         battleOptions = PartyState.BASIC;
         characterIndex = 0;
+        battleMenu.ResetMenu();
+        battleUI.SwitchUI(true);
     }
 
     //      INPUT MANAGER       \\
@@ -37,47 +41,47 @@ public class PlayerParty : MonoBehaviour
         {
             if ((characters[characterIndex].isAlive) && (characterIndex < characters.Count)) 
             {
-                //if (conductor.CheckHitTiming() > 0)
-                //{
+                if (conductor.CheckHitTiming() > 0)
+                {
                     if (battleOptions == PartyState.BASIC)
                     {
                         if (inputs == 'w')
                         {
-                            OptionsBasic(0, PartyState.SELECTING);
+                            OptionsOneBeat(0, PartyState.SELECTING);
                         }
                         else if (inputs == 'a')
                         {
-                            OptionsBasic(1, PartyState.ITEMSELECTING);
+                            OptionsOneBeat(1, PartyState.ITEMSELECTING);
                         }
                         else if (inputs == 's')
                         {
-                            OptionsBasic(2, PartyState.DEFENDING);
+                            OptionsOneBeat(2, PartyState.DEFENDING);
                         }
                         else if (inputs == 'd')
                         {
-                            OptionsBasic(3, PartyState.SKILLSELECTING);
+                            OptionsOneBeat(3, PartyState.SKILLSELECTING);
                         }
                     }
                     else if ((battleOptions == PartyState.SELECTING) || (battleOptions == PartyState.SKILLSELECTING) || (battleOptions == PartyState.ITEMSELECTING))
                     {
                         if (inputs == 'w')
                         {
-                            OptionsSelection(0, battleOptions);
+                            OptionsTwoBeats(0, battleOptions);
                         }
                         else if (inputs == 'a')
                         {
-                            OptionsSelection(1, battleOptions);
+                            OptionsTwoBeats(1, battleOptions);
                         }
                         else if (inputs == 's')
                         {
-                            OptionsSelection(2, battleOptions);
+                            OptionsTwoBeats(2, battleOptions);
                         }
                         else if (inputs == 'd')
                         {
-                            OptionsSelection(3, battleOptions);
+                            OptionsTwoBeats(3, battleOptions);
                         }
                     }
-                //}
+                }
             } 
             else
             {
@@ -85,9 +89,10 @@ public class PlayerParty : MonoBehaviour
             }
         }
     }
-    void OptionsBasic(int btnPress, PartyState selectionType)
+    void OptionsOneBeat(int btnPress, PartyState selectionType)
     {
         battleOptions = selectionType;
+        battleMenu.MenuOptionOneBeat(btnPress);
 
         if(selectionType == PartyState.DEFENDING)
         {
@@ -95,20 +100,23 @@ public class PlayerParty : MonoBehaviour
             StartCoroutine(NextCharacter(.2f));
         }
     }
-    void OptionsSelection(int btnPress, PartyState selectionType)
+    void OptionsTwoBeats(int btnPress, PartyState selectionType)
     {
         if(selectionType == PartyState.SELECTING)
         {
+            battleMenu.MenuOptionTwoBeats(btnPress);
             characters[characterIndex].RecordAction(Actions.ATTACK ,btnPress, noAction);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == PartyState.SKILLSELECTING)
         {
+            battleMenu.MenuOptionTwoBeats(btnPress);
             characters[characterIndex].RecordAction(Actions.SKILLS ,btnPress, noAction);
             StartCoroutine(NextCharacter(.2f));
         }
         else if(selectionType == PartyState.ITEMSELECTING)
         {
+            battleMenu.MenuOptionTwoBeats(btnPress);
             characters[characterIndex].RecordAction(Actions.ITEM ,noAction, btnPress);
             if(btnPress != noAction)
             {
@@ -124,13 +132,17 @@ public class PlayerParty : MonoBehaviour
 
         if (characterIndex < characters.Count) {
             battleOptions = PartyState.BASIC;
+            battleMenu.ResetMenu();
+            battleUI.SwitchUI(true);
         }
         else
         {
             yield return new WaitForSeconds(delayTime);
             battleOptions = PartyState.INACTIVE;
-            battleSystem.state = BattleState.PLAYERTURN;
-            battleSystem.StartCoroutine(battleSystem.PlayerTurn());
+            battleMenu.FinishMenu();
+            battleUI.SwitchUI(false);
+            gameManager.state = BattleState.PLAYERTURN;
+            gameManager.StartCoroutine(gameManager.PlayerTurn());
         }
     }
 
@@ -143,32 +155,32 @@ public class PlayerParty : MonoBehaviour
         }
         else if(characters[chara].actionIndex == Actions.ATTACK) //ATTACK
         {
-            battleSystem.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(battleSystem.groove), false);
+            gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
         }
         else if(characters[chara].actionIndex == Actions.SKILLS)
         {
             if(characters[chara].playerStats.playerSkill == 1) //STRONG ATTACK
             {
                 characters[chara].playerStats.AttackBoost();
-                battleSystem.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(battleSystem.groove), false);
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
             }
             if(characters[chara].playerStats.playerSkill == 2) //HEAL PARTY
             {
                 PartyEffect(characters[chara].playerStats.playerSkill);
                 characters[chara].playerStats.AttackWeak();
-                battleSystem.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(battleSystem.groove), false);
-                //battleUI.UpdateHealth();
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
+                battleUI.UpdateHealth();
             }
             if(characters[chara].playerStats.playerSkill == 3)  //MUlTI ATTACK
             {
                 characters[chara].playerStats.AttackSpread();
-                battleSystem.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(battleSystem.groove), true);
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), true);
             }
             if(characters[chara].playerStats.playerSkill == 4) //DEFEND PARTY
             {
                 characters[chara].playerStats.AttackWeak();
                 PartyEffect(characters[chara].playerStats.playerSkill);
-                battleSystem.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(battleSystem.groove), false);
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
             }
         }
         else if(characters[chara].actionIndex == Actions.ITEM) 
@@ -180,10 +192,11 @@ public class PlayerParty : MonoBehaviour
             {
                 PartyEffect(usedItem.itemStats.itemNo);
                 usedItem.ConsumeItem();
-                //battleUI.UpdateHealth();
+                battleUI.UpdateHealth();
             }
         }
         characters[chara].ResetAction();
+        battleUI.UpdateHealth();
     }
     void PartyEffect(int skill)
     {
@@ -194,6 +207,7 @@ public class PlayerParty : MonoBehaviour
                 if(skill == 2)
                 {
                     characters[i].playerStats.Heal();
+                    battleUI.UpdateHealth();
                 }
                 else if(skill == 3)
                 {
@@ -218,6 +232,7 @@ public class PlayerParty : MonoBehaviour
                 if(characters[i] != null)
                 {
                     characters[i].playerStats.ReceiveAttack(attack);
+                    battleUI.UpdateHealth();
                 }
             }
         }
@@ -226,6 +241,7 @@ public class PlayerParty : MonoBehaviour
             if(characters[index] != null)
             {
                 characters[index].playerStats.ReceiveAttack(attack);
+                battleUI.UpdateHealth();
             }
         }
         for(int i = 0; i < characters.Count; i++) 
@@ -234,6 +250,7 @@ public class PlayerParty : MonoBehaviour
             {
                 characters[i].isAlive = false;
                 characters[i].gameObject.SetActive(false);
+                gameManager.KillConfirmed(true);
             }
         }
     }

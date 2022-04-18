@@ -7,7 +7,7 @@ public enum EnemyActions { WAITING, ATTACK }
 public class EnemyParty : MonoBehaviour
 {
     [Header("External References")]
-    public BattleSystem battleSystem;
+    public GameManager gameManager;
 
     private List<EnemyUnit> enemies = new List<EnemyUnit>();
 
@@ -19,10 +19,13 @@ public class EnemyParty : MonoBehaviour
     }
     public void PerformAction(int enemi, int playerLeft)
     {
-        enemies[enemi].actionIndex = EnemyActions.ATTACK;
-        enemies[enemi].attackIndex = Random.Range(0, playerLeft);
-        battleSystem.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(), false);
-        enemies[enemi].ResetAction();
+        if(enemies[enemi].isAlive)
+        {
+            enemies[enemi].actionIndex = EnemyActions.ATTACK;
+            enemies[enemi].attackIndex = Random.Range(0, playerLeft);
+            gameManager.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(), false);
+            enemies[enemi].ResetAction();
+        }
     }
 
     public void Reaction(int index, Attack attack, bool isMulti)
@@ -50,6 +53,7 @@ public class EnemyParty : MonoBehaviour
             {
                 enemies[i].isAlive = false;
                 enemies[i].gameObject.SetActive(false);
+                gameManager.KillConfirmed(false);
             }
         }
     }

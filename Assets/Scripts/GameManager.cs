@@ -4,82 +4,133 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+public enum BattleState { START, PLAYERINPUT, PLAYERTURN, ENEMYTURN, WON, LOST }
+
 public class GameManager : MonoBehaviour
 {
-    //THIS SCRIPT MANAGES THE WHAT STATE THE BATTLE SYSTEM IS IN, AND WHETHER THE PLAYER HAS WON OR LOST AS WELL AS OTHER GAME RELATED FUNCTIONS
-    public PartyController party;
-    public EnemyPartyController enemyParty;
-    public enum GameStates {STARTING ,INPUT, ACTION, ENEMYACTION, WIN, LOSE}; //A new enumeration that will decide whether it is the player turn, when the player's party will attack and when the enemy will attack.
-    public GameStates battleState; //This is the actual state system that the game will keep track of.
-    public int playerDeaths = 0;
-    public int enemyDeaths = 0;
+    public BattleState state;
+
+    [Header("Setup References")]
+    public GameObject[] playerPrefabs;
+    public GameObject[] enemyPrefabs;
+    public Transform[] playerPositions;
+    public Transform[] enemyPositions;
     public CanvasGroup beginningScreen;
     public TextMeshProUGUI countDownTimerTxt;
+    private float startCountDownTimer;
+
+    [Header("Battle References")]
+    public PlayerParty playerParty;
+    public EnemyParty enemyParty;
+    public List<PlayerUnit> playerUnits = new List<PlayerUnit>();
+    public List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
+
+    [Header("Win/Lose References")]
     public CanvasGroup winScreen;
     public CanvasGroup loseScreen;
-    float timer = 0;
-    float countDownTimer;
-    public bool isGameOver = false;
+    private int playerDeaths = 0;
+    private int enemyDeaths = 0;
+    private bool isGameOver = false;
+    private float endCountDownTimer;
 
-    [Header("Time Sync Objects")]
-    
+    [Header("Game Variables")]
     public int groove = 1;
-
-    void Start()
+    //      START FUNCTIONS       \\
+    void Start() 
     {
-        countDownTimer = 3f;
-        Invoke("StartBattlePhase", countDownTimer);
+        startCountDownTimer = 3f;
+        endCountDownTimer = 0f;
+        state = BattleState.START;
+        StartCoroutine(SetupBattle());
     }
-
-    public void StartBattlePhase()
+    IEnumerator SetupBattle()
     {
-        if(!isGameOver)
+        for(int i = 0; i < playerPrefabs.Length; i++)
         {
-            beginningScreen.alpha = 0;
-            SyncBeat.Instance.StartBeat();
-            battleState = GameStates.INPUT;
-            party.PlayerInputStart();
+            GameObject playerObjects = Instantiate(playerPrefabs[i], playerPositions[i]);
+            playerUnits.Add(playerObjects.GetComponent<PlayerUnit>());
+            GameObject enemyObjects = Instantiate(enemyPrefabs[i], enemyPositions[i]);
+            enemyUnits.Add(enemyObjects.GetComponent<EnemyUnit>());
         }
+        playerParty.SetPartyMembers(playerUnits);
+        enemyParty.SetPartyMembers(enemyUnits);
+        yield return new WaitForSeconds(3f);
+        beginningScreen.alpha = 0;
+        SyncBeat.Instance.StartBeat();
+        state = BattleState.PLAYERINPUT;
+        PlayerInput();
     }
 
-    public void ActionPhase() 
-    {
-        if(!isGameOver)
-        {
-            battleState = GameStates.ACTION;
-        }
-    }
-
-    public void ReactionPhase()
-    {
-        if(!isGameOver)
-        {
-            battleState = GameStates.ENEMYACTION;
-            enemyParty.EnemyAction();
-        }
-    }
-
-    public void InputPhase()
+    //      BATTLELOOP FUNCTIONS       \\
+    void PlayerInput()
     {
         if(!isGameOver)
         {
-            battleState = GameStates.INPUT;
-            party.PlayerInputStart();
+            playerParty.PrimeInput();
         }
     }
-
-    public void ExchangeDamage(bool isMulti, int index, Attack attack) 
+    public IEnumerator PlayerTurn()
+    {        
+        if(!isGameOver)
+        {
+            for (int i = 0; i < playerUnits.Count; i++)
+            {
+                playerParty.PerformAction(i);
+                yield return new WaitForSeconds(.5f);
+            }
+            yield return new WaitForSeconds(2f);
+            state = BattleState.ENEMYTURN;
+            StartCoroutine(EnemyTurn());
+        }
+    }
+    IEnumerator EnemyTurn()
     {
-        if(battleState == GameStates.ACTION) 
+        if(!isGameOver)
         {
-            enemyParty.RecieveAttacks(isMulti, index, attack);
-        }
-        else if(battleState == GameStates.ENEMYACTION) 
-        {
-            party.RecieveAttacks(index, attack);
+            for (int i = 0; i < enemyUnits.Count; i++)
+            {
+                enemyParty.PerformAction(i, playerUnits.Count);
+                yield return new WaitForSeconds(.5f);
+            }
+            yield return new WaitForSeconds(2f);
+            state = BattleState.PLAYERINPUT;
+            PlayerInput();
         }
     }
 
+    //      DAMAGE EXCHANGE FUNCTIONS       \\
+    public void ExchangeDamage(int index, Attack attack, bool isMulti)
+    {
+        if(state == BattleState.PLAYERTURN) 
+        {
+            enemyParty.Reaction(index, attack, isMulti);
+        }
+        else if(state == BattleState.ENEMYTURN) 
+        {
+            playerParty.Reaction(index, attack, isMulti);
+        }
+    }
+
+    //      WIN / LOSE CONDITIONS FUNCTIONS       \\
+    void Update()
+    {
+        if(startCountDownTimer > 0)
+        {
+            startCountDownTimer -= Time.deltaTime;
+            countDownTimerTxt.text = startCountDownTimer.ToString("0");;
+        }
+
+        if(state == BattleState.WON)
+        {
+            state = BattleState.WON;
+            BattleResults(winScreen);
+        }
+        else if(state == BattleState.LOST)
+        {
+            state = BattleState.LOST;
+            BattleResults(loseScreen);
+        }
+    }
     public void KillConfirmed(bool isPlayer)
     {
         if(isPlayer)
@@ -88,7 +139,7 @@ public class GameManager : MonoBehaviour
             if(playerDeaths >= 4)
             {
                 isGameOver = true;
-                battleState = GameStates.LOSE;
+                state = BattleState.LOST;
             }
         }
         else
@@ -97,37 +148,16 @@ public class GameManager : MonoBehaviour
             if(enemyDeaths >= 4)
             {
                 isGameOver = true;
-                battleState = GameStates.WIN;
+                state = BattleState.WON;
             }
         }
     }
-
-    void Update()
-    {
-        if(countDownTimer > 0)
-        {
-            countDownTimer -= Time.deltaTime;
-            countDownTimerTxt.text = countDownTimer.ToString("0");;
-        }
-
-        if(battleState == GameStates.WIN)
-        {
-            battleState = GameStates.WIN;
-            BattleResults(winScreen);
-        }
-        else if(battleState == GameStates.LOSE)
-        {
-            battleState = GameStates.LOSE;
-            BattleResults(loseScreen);
-        }
-    }
-
     void BattleResults(CanvasGroup endingScreen)
     {
-        timer += Time.deltaTime;
-        endingScreen.alpha = timer / 1f;
+        endCountDownTimer += Time.deltaTime;
+        endingScreen.alpha = endCountDownTimer / 1f;
 
-        if(timer > 2f)
+        if(endCountDownTimer > 2f)
         {
             Application.Quit();
         }
