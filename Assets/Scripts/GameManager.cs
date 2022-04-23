@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
     {
         //TEST
 
-        SyncBeat.Instance.WaitBeat();
+        SyncBeat.Instance.InactiveBeat();
 
         if(!isGameOver)
         {
