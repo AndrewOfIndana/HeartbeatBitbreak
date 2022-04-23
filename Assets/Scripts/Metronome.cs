@@ -136,6 +136,10 @@ public class Metronome : MonoBehaviour
     {
         if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.PLAYING) {
             this.playing = true;
+        } else if (SyncBeat.Instance.GetCurrentState() == SyncBeat.State.WAITING)
+        {
+            this.playing = false;
+            ResetProgress();
         }
     }
 }

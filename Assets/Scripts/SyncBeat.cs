@@ -34,6 +34,11 @@ public class SyncBeat : MonoBehaviour
         this.CurrentState = State.STARTUP;
     }
 
+    public void WaitBeat()
+    {
+        this.CurrentState = State.WAITING;
+    }
+
     public State GetCurrentState() {
         return this.CurrentState;
     }
