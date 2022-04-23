@@ -70,7 +70,11 @@ public class GameManager : MonoBehaviour
         }
     }
     public IEnumerator PlayerTurn()
-    {        
+    {
+        //TEST
+
+        SyncBeat.Instance.WaitBeat();
+
         if(!isGameOver)
         {
             for (int i = 0; i < playerUnits.Count; i++)
@@ -85,6 +89,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator EnemyTurn()
     {
+
         if(!isGameOver)
         {
             for (int i = 0; i < enemyUnits.Count; i++)
@@ -94,6 +99,9 @@ public class GameManager : MonoBehaviour
             }
             yield return new WaitForSeconds(2f);
             state = BattleState.PLAYERINPUT;
+
+            SyncBeat.Instance.StartBeat();
+
             PlayerInput();
         }
     }
