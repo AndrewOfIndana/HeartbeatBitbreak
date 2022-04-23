@@ -8,8 +8,9 @@ public class SyncBeat : MonoBehaviour
 
     
 
-    public enum State {WAITING, STARTUP, PLAYING }
+    public enum State {WAITING, STARTUP, PLAYING, RESET }
     private bool StartUpTriggered = false;
+    private bool ResetTriggered = false;
 
     
 
@@ -34,7 +35,7 @@ public class SyncBeat : MonoBehaviour
         this.CurrentState = State.STARTUP;
     }
 
-    public void WaitBeat()
+    public void InactiveBeat()
     {
         this.CurrentState = State.WAITING;
     }
@@ -45,15 +46,27 @@ public class SyncBeat : MonoBehaviour
 
     private void Update()
     {
-        if (StartUpTriggered) {
+        if (StartUpTriggered)
+        {
             this.CurrentState = State.PLAYING;
+            StartUpTriggered = false;
+        }
+        else if (ResetTriggered) 
+        {
+            this.CurrentState = State.WAITING;
+            ResetTriggered = false; 
         }
     }
 
     private void LateUpdate()
     {
-        if (CurrentState == State.STARTUP) {
+        if (CurrentState == State.STARTUP)
+        {
             StartUpTriggered = true;
+        }
+        else if (CurrentState == State.RESET)
+        {
+            ResetTriggered = true;
         }
     }
 }
