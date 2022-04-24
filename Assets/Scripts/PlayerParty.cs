@@ -30,8 +30,10 @@ public class PlayerParty : MonoBehaviour
     {
         battleOptions = PartyState.BASIC;
         characterIndex = 0;
+        characters[characterIndex].gameObject.transform.position = gameManager.playerforePositions[characterIndex].position;
         battleMenu.ResetMenu();
         battleUI.SwitchUI(true);
+        battleUI.UpdateHealth();
     }
 
     //      INPUT MANAGER       \\
@@ -134,9 +136,12 @@ public class PlayerParty : MonoBehaviour
             battleOptions = PartyState.BASIC;
             battleMenu.ResetMenu();
             battleUI.SwitchUI(true);
+            characters[(characterIndex-1)].gameObject.transform.position = gameManager.playerPositions[(characterIndex-1)].position;
+            characters[characterIndex].gameObject.transform.position = gameManager.playerforePositions[characterIndex].position;
         }
         else
         {
+            characters[(characterIndex-1)].gameObject.transform.position = gameManager.playerPositions[(characterIndex-1)].position;
             yield return new WaitForSeconds(delayTime);
             battleOptions = PartyState.INACTIVE;
             battleMenu.FinishMenu();
@@ -151,36 +156,36 @@ public class PlayerParty : MonoBehaviour
     {
         if(characters[chara].actionIndex == Actions.DEFEND) //Defend
         {
-            characters[chara].playerStats.DefenseBoost();
+            characters[chara].DefenseBoost();
         }
         else if(characters[chara].actionIndex == Actions.ATTACK) //ATTACK
         {
-            gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
+            gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), false);
         }
         else if(characters[chara].actionIndex == Actions.SKILLS)
         {
             if(characters[chara].playerStats.playerSkill == 1) //STRONG ATTACK
             {
-                characters[chara].playerStats.AttackBoost();
-                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
+                characters[chara].AttackBoost();
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), false);
             }
             if(characters[chara].playerStats.playerSkill == 2) //HEAL PARTY
             {
                 PartyEffect(characters[chara].playerStats.playerSkill);
-                characters[chara].playerStats.AttackWeak();
-                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
+                characters[chara].AttackLoss();
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), false);
                 battleUI.UpdateHealth();
             }
             if(characters[chara].playerStats.playerSkill == 3)  //MUlTI ATTACK
             {
-                characters[chara].playerStats.AttackSpread();
-                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), true);
+                characters[chara].AttackSpread();
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), true);
             }
             if(characters[chara].playerStats.playerSkill == 4) //DEFEND PARTY
             {
-                characters[chara].playerStats.AttackWeak();
+                characters[chara].AttackLoss();
                 PartyEffect(characters[chara].playerStats.playerSkill);
-                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(gameManager.groove), false);
+                gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), false);
             }
         }
         else if(characters[chara].actionIndex == Actions.ITEM) 
@@ -206,17 +211,17 @@ public class PlayerParty : MonoBehaviour
             {
                 if(skill == 2)
                 {
-                    characters[i].playerStats.Heal();
+                    characters[i].Heal();
                     battleUI.UpdateHealth();
                 }
                 else if(skill == 3)
                 {
-                    characters[i].playerStats.AttackBoost();
+                    characters[i].AttackBoost();
                 }
 
                 else if(skill == 4)
                 {
-                    characters[i].playerStats.DefenseBoost();
+                    characters[i].DefenseBoost();
                 }
             }
         }
@@ -225,28 +230,15 @@ public class PlayerParty : MonoBehaviour
     //      ENEMYTURN FUNCTIONS       \\
     public void Reaction(int index, Attack attack, bool isMulti)
     {
-        if(isMulti)
+        if(characters[index] != null)
         {
-            for(int i = 0; i < characters.Count; i++)
-            {
-                if(characters[i] != null)
-                {
-                    characters[i].playerStats.ReceiveAttack(attack);
-                    battleUI.UpdateHealth();
-                }
-            }
+            characters[index].healthStat -= characters[index].playerStats.GetDefense(characters[index].defenseStat, attack);
+            battleUI.UpdateHealth();
         }
-        else if(!isMulti)
-        {
-            if(characters[index] != null)
-            {
-                characters[index].playerStats.ReceiveAttack(attack);
-                battleUI.UpdateHealth();
-            }
-        }
+
         for(int i = 0; i < characters.Count; i++) 
         {
-            if((characters[i].playerStats.health <= 0) && characters[i].isAlive)
+            if((characters[i].healthStat <= 0) && characters[i].isAlive)
             {
                 characters[i].isAlive = false;
                 characters[i].gameObject.SetActive(false);

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2762376961823277096}
   - component: {fileID: -1560732299405623899}
   m_Layer: 0
-  m_Name: CharaNugget
+  m_Name: Character3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,15 +62,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2428000743125814004, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_Bounds.m_Center.x
-      value: 0.5562037
+      value: 0.55620384
       objectReference: {fileID: 0}
     - target: {fileID: 2428000743125814004, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_Bounds.m_Center.y
-      value: 0.72853494
+      value: 0.7285358
       objectReference: {fileID: 0}
     - target: {fileID: 2428000743125814004, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_Bounds.m_Extent.y
-      value: 1.9597569
+      value: 1.959756
+      objectReference: {fileID: 0}
+    - target: {fileID: 8176946149178074163, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9207533905478376708, guid: 07dfa25bfbd28004dbdd79898d52b44a, type: 3}
       propertyPath: m_RootOrder

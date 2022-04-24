@@ -8,6 +8,8 @@ public class EnemyParty : MonoBehaviour
 {
     [Header("External References")]
     public GameManager gameManager;
+    public BattleMenuController battleMenu;
+    public BattleUIController battleUI;
 
     private List<EnemyUnit> enemies = new List<EnemyUnit>();
 
@@ -16,14 +18,16 @@ public class EnemyParty : MonoBehaviour
     public void SetPartyMembers(List<EnemyUnit> eUnits) 
     {
         enemies = eUnits;
+        battleMenu.SetEnemyNames(eUnits);
     }
-    public void PerformAction(int enemi, int playerLeft)
+    public void PerformAction(int enemi)
     {
         if(enemies[enemi].isAlive)
         {
             enemies[enemi].actionIndex = EnemyActions.ATTACK;
-            enemies[enemi].attackIndex = Random.Range(0, playerLeft);
-            gameManager.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(), false);
+            enemies[enemi].attackIndex = Random.Range(0, 3);
+            gameManager.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(enemies[enemi].attackStat), false);
+            battleUI.UpdateEnemyHealth();
             enemies[enemi].ResetAction();
         }
     }
@@ -36,7 +40,8 @@ public class EnemyParty : MonoBehaviour
             {
                 if(enemies[i] != null)
                 {
-                    enemies[i].enemyStats.ReceiveAttack(attack);
+                    enemies[i].healthStat -= enemies[i].enemyStats.GetDefense(enemies[i].defenseStat, attack);
+                    battleUI.UpdateEnemyHealth();
                 }
             }
         }
@@ -44,12 +49,13 @@ public class EnemyParty : MonoBehaviour
         {
             if(enemies[index] != null)
             {
-                enemies[index].enemyStats.ReceiveAttack(attack);
+                enemies[index].healthStat -= enemies[index].enemyStats.GetDefense(enemies[index].defenseStat, attack);
+                battleUI.UpdateEnemyHealth();
             }
         }
         for(int i = 0; i < enemies.Count; i++) 
         {
-            if((enemies[i].enemyStats.health <= 0) && enemies[i].isAlive)
+            if((enemies[i].healthStat <= 0) && enemies[i].isAlive)
             {
                 enemies[i].isAlive = false;
                 enemies[i].gameObject.SetActive(false);

@@ -22,8 +22,11 @@ public class GameManager : MonoBehaviour
     [Header("Battle References")]
     public PlayerParty playerParty;
     public EnemyParty enemyParty;
-    public List<PlayerUnit> playerUnits = new List<PlayerUnit>();
-    public List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
+    public BattleUIController battleUI;
+    public Transform[] playerforePositions;
+    public Transform[] enemyforePositions;
+    private List<PlayerUnit> playerUnits = new List<PlayerUnit>();
+    private List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
 
     [Header("Win/Lose References")]
     public CanvasGroup winScreen;
@@ -54,6 +57,7 @@ public class GameManager : MonoBehaviour
         }
         playerParty.SetPartyMembers(playerUnits);
         enemyParty.SetPartyMembers(enemyUnits);
+        battleUI.SetUnitHealth(playerUnits, enemyUnits);
         yield return new WaitForSeconds(3f);
         beginningScreen.alpha = 0;
         SyncBeat.Instance.StartBeat();
@@ -75,8 +79,10 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < playerUnits.Count; i++)
             {
+                playerUnits[i].gameObject.transform.position = playerforePositions[i].position;
                 playerParty.PerformAction(i);
-                yield return new WaitForSeconds(.5f);
+                yield return new WaitForSeconds(2f);
+                ResetPosition();
             }
             yield return new WaitForSeconds(2f);
             state = BattleState.ENEMYTURN;
@@ -89,8 +95,10 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < enemyUnits.Count; i++)
             {
-                enemyParty.PerformAction(i, playerUnits.Count);
-                yield return new WaitForSeconds(.5f);
+                enemyUnits[i].gameObject.transform.position = enemyforePositions[i].position;
+                enemyParty.PerformAction(i);
+                yield return new WaitForSeconds(2f);
+                ResetPosition();
             }
             yield return new WaitForSeconds(2f);
             state = BattleState.PLAYERINPUT;
@@ -103,11 +111,21 @@ public class GameManager : MonoBehaviour
     {
         if(state == BattleState.PLAYERTURN) 
         {
+            enemyUnits[index].gameObject.transform.position = enemyforePositions[index].position;
             enemyParty.Reaction(index, attack, isMulti);
         }
         else if(state == BattleState.ENEMYTURN) 
         {
+            playerUnits[index].gameObject.transform.position = playerforePositions[index].position;
             playerParty.Reaction(index, attack, isMulti);
+        }
+    }
+    void ResetPosition() 
+    {
+        for (int i = 0; i < playerUnits.Count; i++)
+        {
+            playerUnits[i].gameObject.transform.position = playerPositions[i].position;
+            enemyUnits[i].gameObject.transform.position = enemyPositions[i].position;
         }
     }
 

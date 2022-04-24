@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5dd2bfba68914cf4c8e26627679d3418, type: 3}
-  m_Name: TestChara4
+  m_Name: Chara2
   m_EditorClassIdentifier: 
+  creatureName: Pax
   health: 10
-  atk: 5
-  def: 5
-  max_health: 10
-  max_atk: 5
-  max_def: 5
-  playerSkill: 4
+  atk: 6
+  def: 6
+  playerSkill: 2

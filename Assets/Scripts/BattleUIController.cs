@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleUIController : MonoBehaviour
 {
     [Header("Object References")]
     public CanvasGroup battleUI;
     public CanvasGroup partyUI;
-    public PlayerUnit[] characters;
+    private List<PlayerUnit> characters = new List<PlayerUnit>();
+    private List<EnemyUnit> enemies = new List<EnemyUnit>();
 
     [Header("Prefabs")]
     public Sprite fullHeart;
@@ -18,8 +20,6 @@ public class BattleUIController : MonoBehaviour
     [System.Serializable]
     public class status 
     {
-        public int maxHealth;
-        public int currentHealth;
         public Image[] heartNotes;
     }
 
@@ -30,6 +30,11 @@ public class BattleUIController : MonoBehaviour
     {
         battleUI.alpha = 0;
         partyUI.alpha = 0;
+    }
+    public void SetUnitHealth(List<PlayerUnit> pUnits, List<EnemyUnit> eUnits) 
+    {
+        characters = pUnits;
+        enemies = eUnits;
     }
     public void SwitchUI(bool isInput)
     {        
@@ -48,14 +53,11 @@ public class BattleUIController : MonoBehaviour
     {
         for(int cs = 0; cs < characterStatus.Length; cs++)
         {
-            characterStatus[cs].maxHealth = characters[cs].playerStats.max_health;
-            characterStatus[cs].currentHealth = characters[cs].playerStats.health;
-
             for(int i = 0; i < characterStatus[cs].heartNotes.Length*2; i++)
             {
-                if((i-1) < characterStatus[cs].currentHealth)
+                if((i-1) < characters[cs].healthStat)
                 {
-                    if(i == characterStatus[cs].currentHealth)
+                    if(i == characters[cs].healthStat)
                     {
                         characterStatus[cs].heartNotes[i/2].sprite = halfHeart;
                     }
@@ -71,4 +73,12 @@ public class BattleUIController : MonoBehaviour
             }
         }
     }
+    public void UpdateEnemyHealth()
+    {
+        for(int i = 0; i < enemies.Count; i++)
+        {
+            enemies[i].healthBar.fillAmount = (((float)(enemies[i].healthStat)) / ((float)(enemies[i].enemyStats.health)));
+        }
+    }
+
 }

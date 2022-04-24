@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dd2bfba68914cf4c8e26627679d3418, type: 3}
-  m_Name: TestChara3
+  m_Script: {fileID: 11500000, guid: 078949289db8b41469cb8cb92fbe26ff, type: 3}
+  m_Name: Enemy2
   m_EditorClassIdentifier: 
-  health: 10
-  atk: 5
-  def: 5
-  max_health: 10
-  max_atk: 5
-  max_def: 5
-  playerSkill: 3
+  creatureName: Skeleton Brute
+  health: 100
+  atk: 4
+  def: 15
+  CritChance: 20

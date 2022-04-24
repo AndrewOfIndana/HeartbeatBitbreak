@@ -9,13 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 078949289db8b41469cb8cb92fbe26ff, type: 3}
-  m_Name: TestSlime2
+  m_Script: {fileID: 11500000, guid: 5dd2bfba68914cf4c8e26627679d3418, type: 3}
+  m_Name: Chara4
   m_EditorClassIdentifier: 
-  health: 20
-  atk: 3
-  def: 5
-  max_health: 20
-  max_atk: 3
-  max_def: 5
-  CritChance: 30
+  creatureName: Ella
+  health: 14
+  atk: 8
+  def: 16
+  playerSkill: 4

@@ -6,29 +6,35 @@ using UnityEngine;
 public class EnemyCharacter : GenericCreature
 {
     public int CritChance = 30;
-    public override void ReceiveAttack(Attack attack) {
 
-        this.health -= attack.GetDamage();
 
-        if (this.health < 0) {
-
-            health = 0;
-
-        }
-
-    }
-
-    public override Attack GetAttack()
+    public override Attack GetAttack(int atkVal) 
     {
         int damage_mult = 1;
-        if (Random.Range(0, 100) <= this.CritChance) {
+        if (Random.Range(0, 100) <= this.CritChance) 
+        {
             damage_mult = 2;        
         }
-        int damage = this.atk * damage_mult;
-        int tohit = Random.Range(0, 20); // Generates a random int between 0-19
-
-        return new Attack(damage, tohit);
-
+        int damage = atkVal * damage_mult;
+        return new Attack(damage);
     }
 
+    public int GetDefense(int defVal, Attack damage)
+    {
+        int newDamage = 0;
+        int oldDamage = damage.GetDamage();
+        if (defVal > oldDamage)
+        {
+            newDamage = (int)(oldDamage * .5f);
+        }
+        else if (defVal <= oldDamage)
+        {
+            newDamage = oldDamage;
+        }
+        return newDamage;
+    }
+    public override int GetDefense(Attack damage)
+    {
+        return this.GetDefense(damage); //Calls the one with an int signature to reduce redunancy
+    }
 }

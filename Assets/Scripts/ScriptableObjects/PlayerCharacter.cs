@@ -7,28 +7,34 @@ public class PlayerCharacter : GenericCreature
 {
     public int playerSkill;
     
-    public override void ReceiveAttack(Attack attack)
+    public Attack GetAttack(int atkVal, int bonus) 
     {
-        if (attack.GetToHit() >= this.def) {
+        int damage = atkVal + bonus;
+        return new Attack(damage);
+    }
 
-            this.health -= attack.GetDamage();
+    public override Attack GetAttack(int atkVal)
+    {
+        return this.GetAttack(atkVal); //Calls the one with an int signature to reduce redunancy
+    }
 
-            if (this.health < 0) {
-                health = 0;
-            }
+    public int GetDefense(int defVal, Attack damage)
+    {
+        int newDamage = 0;
+        int oldDamage = damage.GetDamage();
+        if (defVal > oldDamage)
+        {
+            newDamage = (int)(oldDamage * .5f);
         }
+        else if (defVal <= oldDamage)
+        {
+            newDamage = oldDamage;
+        }
+        return newDamage;
     }
 
-    public override Attack GetAttack()
+    public override int GetDefense(Attack damage)
     {
-        return this.GetAttack(0); //Calls the one with an int signature to reduce redunancy
-    }
-
-    public Attack GetAttack(int bonus) {
-        int damage = this.atk + bonus;
-        int tohit = 20; //20 is higher than any valid def value so it should always hit
-
-        return new Attack(damage, tohit);
-    
+        return this.GetDefense(damage); //Calls the one with an int signature to reduce redunancy
     }
 }

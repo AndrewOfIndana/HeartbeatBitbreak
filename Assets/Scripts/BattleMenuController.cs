@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class BattleMenuController : MonoBehaviour
 {   
@@ -9,6 +10,7 @@ public class BattleMenuController : MonoBehaviour
     public GameObject basicUIelement; //UI elements for base layer
     public GameObject selectUIelement; //UI elements for selection layer
     public GameObject itemSelectUIelement; //UI elements for item layer
+    public TextMeshProUGUI[] enemyNamesTxt;
 
     [Header("Audio References")]
     public AudioSource selectSFX; //SFX for selecting a button
@@ -24,6 +26,14 @@ public class BattleMenuController : MonoBehaviour
     void Awake() 
     {
         FinishMenu();
+    }
+
+    public void SetEnemyNames(List<EnemyUnit> eUnits)
+    {
+        for(int i = 0; i < enemyNamesTxt.Length; i++)
+        {
+            enemyNamesTxt[i].text = eUnits[i].enemyStats.creatureName.ToString();
+        }
     }
 
     public void MenuOptionOneBeat(int click)
