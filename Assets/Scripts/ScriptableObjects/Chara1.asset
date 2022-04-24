@@ -17,3 +17,4 @@ MonoBehaviour:
   atk: 11
   def: 8
   playerSkill: 1
+  playerGrooveCost: 2

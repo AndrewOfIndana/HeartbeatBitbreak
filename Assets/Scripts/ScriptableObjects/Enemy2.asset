@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy2
   m_EditorClassIdentifier: 
   creatureName: Skeleton Brute
-  health: 100
+  health: 50
   atk: 4
   def: 15
-  CritChance: 20
+  CritChance: 15

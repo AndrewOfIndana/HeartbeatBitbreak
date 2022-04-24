@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Chara3
   m_EditorClassIdentifier: 
   creatureName: Nugget
-  health: 6
+  health: 8
   atk: 15
   def: 3
   playerSkill: 3
+  playerGrooveCost: 1

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Enemy3
   m_EditorClassIdentifier: 
   creatureName: Green Slime
-  health: 45
+  health: 30
   atk: 5
   def: 10
-  CritChance: 50
+  CritChance: 40

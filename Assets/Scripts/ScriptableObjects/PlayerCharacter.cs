@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerCharacter : GenericCreature
 {
     public int playerSkill;
+    public int playerGrooveCost;
     
     public Attack GetAttack(int atkVal, int bonus) 
     {

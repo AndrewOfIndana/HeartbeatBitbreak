@@ -17,11 +17,11 @@ public class BattleMenuController : MonoBehaviour
     public AudioSource selectFinishSFX; //SFX for selecting a finishing button;
 
     [Header("Image References")]
-    public Image[] buttons; //image reference for each of the four buttons
+    public CanvasGroup[] buttons; //image reference for each of the four buttons
 
-    private Color unclicked = new Color(255f,255f,255f,1f); //color of an unclicked button
-    private Color clicked = new Color32(190,190,190,255); //color of a clicked button
-    private Color transparent = new Color(255f,255f,255f,0f); //color of a transparent button
+    private const float unclicked = .5f;
+    private const float clicked = 1f;
+    private const float transparent = 0; //color of a transparent button
 
     void Awake() 
     {
@@ -38,7 +38,7 @@ public class BattleMenuController : MonoBehaviour
 
     public void MenuOptionOneBeat(int click)
     {
-        buttons[click].color = clicked; //chosen button is grayed
+        buttons[click].alpha = clicked; //chosen button is grayed
             
         if(click == 0 || click == 3)  //if click is [w] or [d] move to enemy selection by default
         {
@@ -58,17 +58,17 @@ public class BattleMenuController : MonoBehaviour
     }
     public void MenuOptionTwoBeats(int click)
     {
-        buttons[click].color = clicked; //chosen button is grayed
+        buttons[click].alpha = clicked; //chosen button is grayed
         selectFinishSFX.Play(); //Play finish select SFX
         StartCoroutine(MenuChange(transparent, false, false, false, .1f));  //transition finished turn
     }
 
-    IEnumerator MenuChange(Color btnColor, bool baseUI, bool selectUI, bool itemUI, float delayTime) //determine which button layers are active and sets the levelBase int
+    IEnumerator MenuChange(float btnColor, bool baseUI, bool selectUI, bool itemUI, float delayTime) //determine which button layers are active and sets the levelBase int
     {
         yield return new WaitForSeconds(delayTime);
         for(int i = 0; i < 4; i++)
         {
-            buttons[i].color = btnColor; //either sets buttons transparent or apparent
+            buttons[i].alpha = btnColor; //either sets buttons transparent or apparent
         }
         basicUIelement.SetActive(baseUI); //set base ui elements true or false
         selectUIelement.SetActive(selectUI); //set enemy select ui elements true or false

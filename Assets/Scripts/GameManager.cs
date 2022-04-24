@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
     private float endCountDownTimer;
 
     [Header("Game Variables")]
-    public int groove = 1;
+    public int groove = 0;
     //      START FUNCTIONS       \\
     void Start() 
     {
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             state = BattleState.PLAYERINPUT;
 
             SyncBeat.Instance.StartBeat();
-
+            AddGroove(2);
             PlayerInput();
         }
     }
@@ -134,6 +134,14 @@ public class GameManager : MonoBehaviour
         {
             playerUnits[i].gameObject.transform.position = playerPositions[i].position;
             enemyUnits[i].gameObject.transform.position = enemyPositions[i].position;
+        }
+    }
+    public void AddGroove(int add)
+    {
+        if(groove < 8)
+        {
+            groove += add;
+            battleUI.UpdateHud(groove, -1);
         }
     }
 

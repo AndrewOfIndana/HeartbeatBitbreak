@@ -49,7 +49,7 @@ public class PlayerUnit : MonoBehaviour
     //      STAT RELATED FUNCTIONS       \\
     public void Heal()
     {
-        this.healthStat = (int)(this.healthStat * 1.5f);
+        this.healthStat = playerStats.health;
     }
     public void AttackBoost()
     {
