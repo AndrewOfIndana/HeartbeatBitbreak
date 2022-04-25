@@ -43,7 +43,7 @@ public class PlayerParty : MonoBehaviour
     //      INPUT MANAGER       \\
     void Update() 
     {
-        if(conductor.TurnOverFlag && (battleOptions != PartyState.INACTIVE))
+        if(SyncBeat.TurnOverFlag && (battleOptions != PartyState.INACTIVE))
         {
             characterIndex = characters.Count;
             for(int i = 0; i < characters.Count; i++)
@@ -58,9 +58,9 @@ public class PlayerParty : MonoBehaviour
             gameManager.state = BattleState.PLAYERTURN;
             gameManager.StartCoroutine(gameManager.PlayerTurn());
         }
-        else if (gameManager.state == BattleState.ENEMYTURN && conductor.TurnOverFlag == true)
+        else if (gameManager.state == BattleState.ENEMYTURN && SyncBeat.TurnOverFlag == true)
         {
-            conductor.TurnOverFlag = false;
+            SyncBeat.TurnOverFlag = false;
         }
     }
 
@@ -186,7 +186,7 @@ public class PlayerParty : MonoBehaviour
             yield return new WaitForSeconds(delayTime);
             battleOptions = PartyState.INACTIVE;
             battleMenu.FinishMenu();
-            conductor.TurnOverFlag = false;
+            SyncBeat.TurnOverFlag = false;
             battleUI.SwitchUI(false);
             battleUI.UpdateHud(gameManager.groove, -1);
             gameManager.state = BattleState.PLAYERTURN;
