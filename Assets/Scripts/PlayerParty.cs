@@ -15,9 +15,8 @@ public class PlayerParty : MonoBehaviour
     public BattleUIController battleUI;
 
     private List<PlayerUnit> characters = new List<PlayerUnit>();
-    private PartyState battleOptions;
-    private int characterIndex;
-    
+    public PartyState battleOptions;
+    public int characterIndex;
     private const int noAction = -1;
 
     //      START FUNCTIONS       \\
@@ -42,6 +41,29 @@ public class PlayerParty : MonoBehaviour
     }
 
     //      INPUT MANAGER       \\
+    void Update() 
+    {
+        if(conductor.TurnOverFlag && (battleOptions != PartyState.INACTIVE))
+        {
+            characterIndex = characters.Count;
+            for(int i = 0; i < characters.Count; i++)
+            {
+                characters[i].gameObject.transform.position = gameManager.playerPositions[i].position;
+                characters[i].RecordAction(Actions.WAITING ,noAction, noAction);
+            }
+            battleOptions = PartyState.INACTIVE;
+            battleMenu.FinishMenu();
+            battleUI.SwitchUI(false);
+            battleUI.UpdateHud(gameManager.groove, -1);
+            gameManager.state = BattleState.PLAYERTURN;
+            gameManager.StartCoroutine(gameManager.PlayerTurn());
+        }
+        else if (gameManager.state == BattleState.ENEMYTURN && conductor.TurnOverFlag == true)
+        {
+            conductor.TurnOverFlag = false;
+        }
+    }
+
     public void CurrentInput(char inputs)
     {
         if(battleOptions != PartyState.INACTIVE)
@@ -157,10 +179,14 @@ public class PlayerParty : MonoBehaviour
         }
         else
         {
-            characters[(characterIndex-1)].gameObject.transform.position = gameManager.playerPositions[(characterIndex-1)].position;
+            for(int i = 0; i < characters.Count; i++)
+            {
+                characters[i].gameObject.transform.position = gameManager.playerPositions[i].position;
+            }
             yield return new WaitForSeconds(delayTime);
             battleOptions = PartyState.INACTIVE;
             battleMenu.FinishMenu();
+            conductor.TurnOverFlag = false;
             battleUI.SwitchUI(false);
             battleUI.UpdateHud(gameManager.groove, -1);
             gameManager.state = BattleState.PLAYERTURN;
