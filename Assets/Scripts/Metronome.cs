@@ -124,6 +124,10 @@ public class Metronome : MonoBehaviour
 
     private void UpdateProgressBar() {
         this.ProgressSprite.transform.Translate(Vector3.right * speedPerSec * Time.deltaTime);
+        if (ProgressSprite.transform.position.x >= this.EndPoint.transform.position.x)
+        {
+            Syncbeat.TurnOverFlag = true;
+        }
     }
 
     void Update()
