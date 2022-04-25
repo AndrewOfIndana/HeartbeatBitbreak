@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Conductor : MonoBehaviour
 {
+    public static bool TurnOverFlag = false;
     //the number of beats in each loop
     public float beatsPerLoop;
 
@@ -93,6 +94,8 @@ public class Conductor : MonoBehaviour
             {
                 completedLoops++;
                 loopPositionInBeats = songPositionInBeats - completedLoops * beatsPerLoop;
+
+                TurnOverFlag = true;
             }
 
             loopPositionInAnalog = loopPositionInBeats / beatsPerLoop;
