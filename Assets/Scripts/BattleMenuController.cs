@@ -18,6 +18,7 @@ public class BattleMenuController : MonoBehaviour
 
     [Header("Image References")]
     public CanvasGroup[] buttons; //image reference for each of the four buttons
+    public GameObject feedback; //image reference for each of the four buttons
 
     private const float unclicked = .5f;
     private const float clicked = 1f;
@@ -59,6 +60,7 @@ public class BattleMenuController : MonoBehaviour
     public void MenuOptionTwoBeats(int click)
     {
         buttons[click].alpha = clicked; //chosen button is grayed
+        Instantiate(feedback, buttons[click].transform);
         selectFinishSFX.Play(); //Play finish select SFX
         StartCoroutine(MenuChange(transparent, false, false, false, .1f));  //transition finished turn
     }

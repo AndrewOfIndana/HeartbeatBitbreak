@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats: {fileID: 11400000, guid: ffa25c650b21d384f86bde7e9a775234, type: 2}
+  atkAuraPrefab: {fileID: 48790347542059260, guid: 0f0fdca73be7e664596cc900e6156b79, type: 3}
+  defAuraPrefab: {fileID: 48790347542059260, guid: 9cd628066dee4a046a610dd25b4e8b11, type: 3}
+  healAuraPrefab: {fileID: 48790347542059260, guid: 88e1e3160372eca49bf9ba45e56e4fc5, type: 3}
+  hitPrefab: {fileID: 7088831124922470494, guid: d975d3f3c94d9e241aa90041b56cad8e, type: 3}
   healthStat: 0
   attackStat: 0
   defenseStat: 0

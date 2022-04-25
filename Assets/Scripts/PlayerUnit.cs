@@ -6,6 +6,12 @@ public class PlayerUnit : MonoBehaviour
 {
     [Header("External References")]
     public PlayerCharacter playerStats;
+    public GameObject atkAuraPrefab;
+    public GameObject defAuraPrefab;
+    public GameObject healAuraPrefab;
+    public GameObject hitPrefab;
+    private GameObject atkAuraObject;
+    private GameObject defAuraObject;
 
     [Header("Stat Variables")]
     public int healthStat;
@@ -49,11 +55,16 @@ public class PlayerUnit : MonoBehaviour
     //      STAT RELATED FUNCTIONS       \\
     public void Heal()
     {
-        this.healthStat = playerStats.health;
+        if(isAlive)
+        {
+            this.healthStat = playerStats.health;
+            Instantiate(healAuraPrefab, this.transform.position, Quaternion.identity, this.transform);
+        }
     }
     public void AttackBoost()
     {
         this.attackStat = (int)(this.defenseStat * 1.5f);
+        atkAuraObject = Instantiate(atkAuraPrefab, this.transform.position, Quaternion.identity, this.transform);
     }
     public void AttackLoss()
     {
@@ -63,10 +74,23 @@ public class PlayerUnit : MonoBehaviour
     {
         this.attackStat = (int)(this.defenseStat * 0.3f);
     }
-
     public void DefenseBoost()
     {
         this.defenseStat = (int)(this.defenseStat * 1.5f);
+        defAuraObject = Instantiate(defAuraPrefab, this.transform.position, Quaternion.identity, this.transform);
+    }
+    public void ResetAura()
+    {
+        if(atkAuraObject != null)
+        {
+            Destroy(atkAuraObject);
+            atkAuraObject = null;
+        }
+        if(defAuraObject != null)
+        {
+            Destroy(defAuraObject);
+            defAuraObject = null;
+        }
     }
 
     void ResetStats()

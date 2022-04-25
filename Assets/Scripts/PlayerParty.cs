@@ -29,6 +29,10 @@ public class PlayerParty : MonoBehaviour
     public void PrimeInput()
     {
         battleOptions = PartyState.BASIC;
+        for(int i = 0; i < characters.Count; i++)
+        {
+            characters[i].ResetAura();
+        }
         characterIndex = 0;
         characters[characterIndex].gameObject.transform.position = gameManager.playerforePositions[characterIndex].position;
         battleMenu.ResetMenu();
@@ -246,6 +250,7 @@ public class PlayerParty : MonoBehaviour
         if(characters[index] != null)
         {
             characters[index].healthStat -= characters[index].playerStats.GetDefense(characters[index].defenseStat, attack);
+            Instantiate(characters[index].hitPrefab, characters[index].transform);
             battleUI.UpdateHealth();
         }
 

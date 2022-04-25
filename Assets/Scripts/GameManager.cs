@@ -143,6 +143,16 @@ public class GameManager : MonoBehaviour
             groove += add;
             battleUI.UpdateHud(groove, -1);
         }
+        else if(groove >= 8)
+        {
+            groove = 8;
+            battleUI.UpdateHud(groove, -1);
+        }
+        else if (groove <= 0)
+        {
+            groove = 0;
+            battleUI.UpdateHud(groove, -1);
+        }
     }
 
     //      WIN / LOSE CONDITIONS FUNCTIONS       \\

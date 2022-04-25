@@ -41,6 +41,7 @@ public class EnemyParty : MonoBehaviour
                 if(enemies[i] != null)
                 {
                     enemies[i].healthStat -= enemies[i].enemyStats.GetDefense(enemies[i].defenseStat, attack);
+                    Instantiate(enemies[i].hitPrefab, enemies[i].transform);
                     battleUI.UpdateEnemyHealth();
                 }
             }
@@ -50,6 +51,7 @@ public class EnemyParty : MonoBehaviour
             if(enemies[index] != null)
             {
                 enemies[index].healthStat -= enemies[index].enemyStats.GetDefense(enemies[index].defenseStat, attack);
+                Instantiate(enemies[index].hitPrefab, enemies[index].transform);
                 battleUI.UpdateEnemyHealth();
             }
         }

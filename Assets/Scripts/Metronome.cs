@@ -77,6 +77,7 @@ public class Metronome : MonoBehaviour
             //Move new beat to appropriate position
             temp.transform.SetPositionAndRotation(this.StartPoint.position, BeatTemplate.transform.rotation);
             temp.transform.Translate(Vector3.right * (distanceBetweenBeats * i));
+            temp.transform.localScale = new Vector3(1,1,1);
 
             //add beat to array
 
@@ -107,6 +108,7 @@ public class Metronome : MonoBehaviour
 
         Marker.transform.SetParent(ParentBeat.transform);
         Marker.transform.SetPositionAndRotation(ParentBeat.transform.position, MarkerTemplate.transform.rotation);
+        Marker.transform.localScale = new Vector3(1,0.75f,1);
         Marker.transform.Translate(Vector3.left * distanceBetweenBeats / 2);
     }
 

@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyStats: {fileID: 11400000, guid: ca859dd2020247d4ba1990ed29d4ac45, type: 2}
+  hitPrefab: {fileID: 7088831124922470494, guid: d975d3f3c94d9e241aa90041b56cad8e, type: 3}
   healthStat: 0
   attackStat: 0
   defenseStat: 0

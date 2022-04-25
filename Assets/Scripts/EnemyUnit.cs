@@ -8,6 +8,7 @@ public class EnemyUnit : MonoBehaviour
 {
     [Header("External References")]
     public EnemyCharacter enemyStats;
+    public GameObject hitPrefab;
 
     [Header("Stat Variables")]
     public int healthStat;
