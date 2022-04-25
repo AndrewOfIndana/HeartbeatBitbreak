@@ -5,7 +5,7 @@ using UnityEngine;
 public class SyncBeat : MonoBehaviour
 {
     public static SyncBeat Instance { get; private set; }
-
+    public static bool TurnOverFlag = false;
     
 
     public enum State {WAITING, STARTUP, PLAYING, RESET }
