@@ -18,6 +18,9 @@ public class PlayerParty : MonoBehaviour
     public PartyState battleOptions;
     public int characterIndex;
     private const int noAction = -1;
+    private float checkTimer = .2f;
+    const float switchTime = .2f;
+    private bool isThisTurnOver;
 
     //      START FUNCTIONS       \\
     public void SetPartyMembers(List<PlayerUnit> pUnits) 
@@ -49,7 +52,6 @@ public class PlayerParty : MonoBehaviour
             for(int i = 0; i < characters.Count; i++)
             {
                 characters[i].gameObject.transform.position = gameManager.playerPositions[i].position;
-                characters[i].RecordAction(Actions.WAITING ,noAction, noAction);
             }
             battleOptions = PartyState.INACTIVE;
             battleMenu.FinishMenu();
@@ -61,6 +63,20 @@ public class PlayerParty : MonoBehaviour
         else if (gameManager.state == BattleState.ENEMYTURN && SyncBeat.TurnOverFlag == true)
         {
             SyncBeat.TurnOverFlag = false;
+        }
+
+        if((battleOptions != PartyState.INACTIVE) && (characters[characterIndex].isAlive == false))
+        {
+            checkTimer -= Time.deltaTime;
+            if(checkTimer <= 0)
+            {
+                checkTimer += switchTime;
+                if(isThisTurnOver)
+                {
+                    isThisTurnOver = false;
+                    StartCoroutine(NextCharacter(switchTime));
+                }
+            }
         }
     }
 
@@ -114,7 +130,7 @@ public class PlayerParty : MonoBehaviour
             } 
             else
             {
-                StartCoroutine(NextCharacter(.2f));
+                StartCoroutine(NextCharacter(switchTime));
             }
         }
     }
@@ -126,7 +142,7 @@ public class PlayerParty : MonoBehaviour
         if(selectionType == PartyState.DEFENDING)
         {
             characters[characterIndex].RecordAction(Actions.DEFEND ,noAction, noAction);
-            StartCoroutine(NextCharacter(.2f));
+            StartCoroutine(NextCharacter(switchTime));
         }
     }
     void OptionsTwoBeats(int btnPress, PartyState selectionType)
@@ -135,7 +151,7 @@ public class PlayerParty : MonoBehaviour
         {
             battleMenu.MenuOptionTwoBeats(btnPress);
             characters[characterIndex].RecordAction(Actions.ATTACK ,btnPress, noAction);
-            StartCoroutine(NextCharacter(.2f));
+            StartCoroutine(NextCharacter(switchTime));
         }
         else if(selectionType == PartyState.SKILLSELECTING)
         {
@@ -151,7 +167,7 @@ public class PlayerParty : MonoBehaviour
             {
                 characters[characterIndex].RecordAction(Actions.ATTACK ,btnPress, noAction);
             }
-            StartCoroutine(NextCharacter(.2f));
+            StartCoroutine(NextCharacter(switchTime));
         }
         else if(selectionType == PartyState.ITEMSELECTING)
         {
@@ -161,7 +177,7 @@ public class PlayerParty : MonoBehaviour
             {
                 itemManager.EmptyItemName(btnPress);
             }
-            StartCoroutine(NextCharacter(.2f));
+            StartCoroutine(NextCharacter(switchTime));
         }
     }
     IEnumerator NextCharacter(float delayTime) 
@@ -170,6 +186,7 @@ public class PlayerParty : MonoBehaviour
         characterIndex++;
 
         if (characterIndex < characters.Count) {
+            isThisTurnOver = true;
             battleOptions = PartyState.BASIC;
             battleMenu.ResetMenu();
             battleUI.SwitchUI(true);
@@ -179,12 +196,13 @@ public class PlayerParty : MonoBehaviour
         }
         else
         {
+            battleOptions = PartyState.INACTIVE;
+            isThisTurnOver = false;
             for(int i = 0; i < characters.Count; i++)
             {
                 characters[i].gameObject.transform.position = gameManager.playerPositions[i].position;
             }
             yield return new WaitForSeconds(delayTime);
-            battleOptions = PartyState.INACTIVE;
             battleMenu.FinishMenu();
             SyncBeat.TurnOverFlag = false;
             battleUI.SwitchUI(false);
@@ -221,7 +239,6 @@ public class PlayerParty : MonoBehaviour
             }
             if(characters[chara].playerStats.playerSkill == 3)  //MUlTI ATTACK
             {
-                characters[chara].AttackLoss();
                 gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), true);
             }
             if(characters[chara].playerStats.playerSkill == 4) //DEFEND PARTY

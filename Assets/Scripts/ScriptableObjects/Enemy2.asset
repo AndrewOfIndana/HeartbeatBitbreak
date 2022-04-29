@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureName: Skeleton Brute
   health: 50
-  atk: 4
+  atk: 2
   def: 15
   CritChance: 15

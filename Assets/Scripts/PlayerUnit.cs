@@ -63,7 +63,7 @@ public class PlayerUnit : MonoBehaviour
     }
     public void AttackBoost()
     {
-        this.attackStat = (int)(this.defenseStat * 1.5f);
+        this.attackStat = (int)(this.attackStat * 1.5f);
         atkAuraObject = Instantiate(atkAuraPrefab, this.transform.position, Quaternion.identity, this.transform);
     }
     public void AttackLoss()

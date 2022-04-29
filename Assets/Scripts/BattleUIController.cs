@@ -32,7 +32,7 @@ public class BattleUIController : MonoBehaviour
     public TextMeshProUGUI skillsText;
     private string agiSkillTxt = "Skill: Boost attack of this character. Costs: 2 groove";
     private string paxSkillTxt = "Skill: Heal entire party to full health. Costs: 4 groove";
-    private string nuggetSkillTxt = "Skill: Multi-attack enemy party. Costs: 1 groove";
+    private string nuggetSkillTxt = "Skill: Multi-attack enemy party. Costs: 5 groove";
     private string ellaSkillTxt = "Skill: Boost defense of entire party. Costs: 2 groove";
 
     void Awake()

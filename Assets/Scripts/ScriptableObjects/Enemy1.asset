@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creatureName: Blue Slime #1
   health: 20
-  atk: 5
+  atk: 3
   def: 10
   CritChance: 25
