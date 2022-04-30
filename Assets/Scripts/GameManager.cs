@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
-public enum BattleState { START, PLAYERINPUT, PLAYERTURN, ENEMYTURN, WON, LOST }
+public enum BattleState { START, SETUP, PLAYERINPUT, PLAYERTURN, ENEMYTURN, WON, LOST }
 
 public class GameManager : MonoBehaviour
 {
@@ -15,7 +16,8 @@ public class GameManager : MonoBehaviour
     public GameObject[] enemyPrefabs;
     public Transform[] playerPositions;
     public Transform[] enemyPositions;
-    public CanvasGroup beginningScreen;
+    public CanvasGroup startupScreen;
+    public CanvasGroup countDownScreen;
     public TextMeshProUGUI countDownTimerTxt;
     private float startCountDownTimer;
 
@@ -39,11 +41,17 @@ public class GameManager : MonoBehaviour
     [Header("Game Variables")]
     public int groove = 0;
     //      START FUNCTIONS       \\
-    void Start() 
+
+    void Start()
     {
+        state = BattleState.START;
+        startupScreen.alpha = 1;
+    }
+    void StartUp()
+    {
+        startupScreen.alpha = 0;
         startCountDownTimer = 3f;
         endCountDownTimer = 0f;
-        state = BattleState.START;
         StartCoroutine(SetupBattle());
     }
     IEnumerator SetupBattle()
@@ -59,7 +67,7 @@ public class GameManager : MonoBehaviour
         enemyParty.SetPartyMembers(enemyUnits);
         battleUI.SetUnitHealth(playerUnits, enemyUnits);
         yield return new WaitForSeconds(3f);
-        beginningScreen.alpha = 0;
+        countDownScreen.alpha = 0;
         SyncBeat.Instance.StartBeat();
         state = BattleState.PLAYERINPUT;
         PlayerInput();
@@ -158,11 +166,21 @@ public class GameManager : MonoBehaviour
     //      WIN / LOSE CONDITIONS FUNCTIONS       \\
     void Update()
     {
+        if(state == BattleState.START)
+        {
+            if (Input.GetKeyDown("space") || Input.GetKeyDown("w") || Input.GetKeyDown("a") || Input.GetKeyDown("s") || Input.GetKeyDown("d"))
+            {
+                state = BattleState.SETUP;
+                StartUp();
+            }
+        }
+
         if(startCountDownTimer > 0)
         {
             startCountDownTimer -= Time.deltaTime;
             countDownTimerTxt.text = startCountDownTimer.ToString("0");;
         }
+
 
         if(state == BattleState.WON)
         {
@@ -174,9 +192,10 @@ public class GameManager : MonoBehaviour
             state = BattleState.LOST;
             BattleResults(loseScreen);
         }
-        if(Input.GetKeyDown (KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+            //SceneManager.LoadScene("BattleScene");
         }
 
     }
@@ -209,6 +228,7 @@ public class GameManager : MonoBehaviour
         if(endCountDownTimer > 2f)
         {
             Application.Quit();
+            //SceneManager.LoadScene("BattleScene");
         }
     }
 }
