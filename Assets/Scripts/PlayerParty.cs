@@ -13,6 +13,7 @@ public class PlayerParty : MonoBehaviour
     public ItemManager itemManager;
     public BattleMenuController battleMenu;
     public BattleUIController battleUI;
+    public UIAudio AudioManager;
 
     private List<PlayerUnit> characters = new List<PlayerUnit>();
     public PartyState battleOptions;
@@ -88,6 +89,7 @@ public class PlayerParty : MonoBehaviour
             {
                 if (conductor.CheckHitTiming() > 0)
                 {
+                    AudioManager.PlaySFX(UIAudio.SoundEffectTags.CORRECT_HIT);
                     if (battleOptions == PartyState.BASIC)
                     {
                         if (inputs == 'w')
@@ -126,6 +128,10 @@ public class PlayerParty : MonoBehaviour
                             OptionsTwoBeats(3, battleOptions);
                         }
                     }
+                } 
+                else
+                {
+                    AudioManager.PlaySFX(UIAudio.SoundEffectTags.MISSED_INPUT);
                 }
             } 
             else
