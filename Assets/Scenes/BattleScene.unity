@@ -4756,8 +4756,8 @@ MonoBehaviour:
   audioPlayer: {fileID: 960724067}
   CORRECT_HIT: {fileID: 8300000, guid: ffb159a21c8a04135a5616979c828fab, type: 3}
   MISSED_INPUT: {fileID: 8300000, guid: cf6c0e7fbef9449c98a0cdb5ea0c4d9f, type: 3}
-  PLAYER_HIT: {fileID: 8300000, guid: 84da8b4fc5e914b4494009080baa7806, type: 3}
-  ENEMY_HIT: {fileID: 0}
+  PLAYER_HIT: {fileID: 8300000, guid: 17c6d9c455cc3de4f82081b46e39ac7f, type: 3}
+  ENEMY_HIT: {fileID: 8300000, guid: aac654a59199d544c9b14a46ffae5d89, type: 3}
   PLAYER_DEATH: {fileID: 0}
   ENEMY_DEATH: {fileID: 0}
 --- !u!4 &960724069
