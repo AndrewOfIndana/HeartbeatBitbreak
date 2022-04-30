@@ -228,6 +228,7 @@ public class PlayerParty : MonoBehaviour
         else if(characters[chara].actionIndex == Actions.ATTACK) //ATTACK
         {
             gameManager.ExchangeDamage(characters[chara].attackIndex, characters[chara].playerStats.GetAttack(characters[chara].attackStat, gameManager.groove), false);
+            AudioManager.PlaySFX(UIAudio.SoundEffectTags.PLAYER_HIT);
         }
         else if(characters[chara].actionIndex == Actions.SKILLS)
         {
