@@ -24,7 +24,7 @@ public class UIAudio : MonoBehaviour
         audioPlayer = GetComponent<AudioSource>();
         SFXDict.Add(SoundEffectTags.CORRECT_HIT, CORRECT_HIT);
         SFXDict.Add(SoundEffectTags.MISSED_INPUT, MISSED_INPUT);
-        SFXDict.Add(SoundEffectTags.PLAYER_HIT, ENEMY_HIT);
+        SFXDict.Add(SoundEffectTags.PLAYER_HIT,PLAYER_HIT);
         SFXDict.Add(SoundEffectTags.ENEMY_HIT, ENEMY_HIT);
         SFXDict.Add(SoundEffectTags.PLAYER_DEATH, PLAYER_DEATH);
         SFXDict.Add(SoundEffectTags.ENEMY_DEATH, PLAYER_DEATH);

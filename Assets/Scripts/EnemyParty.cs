@@ -10,6 +10,7 @@ public class EnemyParty : MonoBehaviour
     public GameManager gameManager;
     public BattleMenuController battleMenu;
     public BattleUIController battleUI;
+    public UIAudio AudioManager;
     public ScreenShake cameraShake;
 
     private List<EnemyUnit> enemies = new List<EnemyUnit>();
@@ -28,6 +29,7 @@ public class EnemyParty : MonoBehaviour
             enemies[enemi].actionIndex = EnemyActions.ATTACK;
             enemies[enemi].attackIndex = Random.Range(0, 3);
             gameManager.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(enemies[enemi].attackStat), false);
+            AudioManager.PlaySFX(UIAudio.SoundEffectTags.ENEMY_HIT);
             battleUI.UpdateEnemyHealth();
             enemies[enemi].ResetAction();
         }
