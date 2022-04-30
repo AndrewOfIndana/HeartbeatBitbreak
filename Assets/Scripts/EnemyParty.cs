@@ -10,6 +10,7 @@ public class EnemyParty : MonoBehaviour
     public GameManager gameManager;
     public BattleMenuController battleMenu;
     public BattleUIController battleUI;
+    public ScreenShake cameraShake;
 
     private List<EnemyUnit> enemies = new List<EnemyUnit>();
 
@@ -38,8 +39,9 @@ public class EnemyParty : MonoBehaviour
         {
             for(int i = 0; i < enemies.Count; i++)
             {
-                if(enemies[i] != null)
+                if(enemies[index].isAlive)
                 {
+                    StartCoroutine(cameraShake.Shake(.2f, .1f));
                     enemies[i].healthStat -= enemies[i].enemyStats.GetDefense(enemies[i].defenseStat, attack);
                     Instantiate(enemies[i].hitPrefab, enemies[i].transform);
                     battleUI.UpdateEnemyHealth();
@@ -48,8 +50,9 @@ public class EnemyParty : MonoBehaviour
         }
         else if(!isMulti)
         {
-            if(enemies[index] != null)
+            if(enemies[index].isAlive)
             {
+                StartCoroutine(cameraShake.Shake(.2f, .1f));
                 enemies[index].healthStat -= enemies[index].enemyStats.GetDefense(enemies[index].defenseStat, attack);
                 Instantiate(enemies[index].hitPrefab, enemies[index].transform);
                 battleUI.UpdateEnemyHealth();

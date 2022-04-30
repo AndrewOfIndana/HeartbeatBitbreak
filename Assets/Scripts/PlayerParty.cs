@@ -14,6 +14,7 @@ public class PlayerParty : MonoBehaviour
     public BattleMenuController battleMenu;
     public BattleUIController battleUI;
     public UIAudio AudioManager;
+    public ScreenShake cameraShake;
 
     private List<PlayerUnit> characters = new List<PlayerUnit>();
     public PartyState battleOptions;
@@ -297,8 +298,9 @@ public class PlayerParty : MonoBehaviour
     //      ENEMYTURN FUNCTIONS       \\
     public void Reaction(int index, Attack attack, bool isMulti)
     {
-        if(characters[index] != null)
+        if(characters[index].isAlive)
         {
+            StartCoroutine(cameraShake.Shake(.2f, .1f));
             characters[index].healthStat -= characters[index].playerStats.GetDefense(characters[index].defenseStat, attack);
             Instantiate(characters[index].hitPrefab, characters[index].transform);
             battleUI.UpdateHealth();
