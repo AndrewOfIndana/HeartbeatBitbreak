@@ -36,6 +36,16 @@ public class BattleMenuController : MonoBehaviour
             enemyNamesTxt[i].text = eUnits[i].enemyStats.creatureName.ToString();
         }
     }
+    public void UpdateEnemyNames(List<EnemyUnit> eUnits)
+    {
+        for(int i = 0; i < enemyNamesTxt.Length; i++)
+        {
+            if(eUnits[i].isAlive == false)
+            {
+                enemyNamesTxt[i].text = "Slain";
+            }
+        }
+    }
 
     public void MenuOptionOneBeat(int click)
     {

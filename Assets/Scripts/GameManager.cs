@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     public BattleUIController battleUI;
     public Transform[] playerforePositions;
     public Transform[] enemyforePositions;
-    private List<PlayerUnit> playerUnits = new List<PlayerUnit>();
+    public List<PlayerUnit> playerUnits = new List<PlayerUnit>();
     private List<EnemyUnit> enemyUnits = new List<EnemyUnit>();
 
     [Header("Win/Lose References")]
@@ -91,10 +91,13 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < playerUnits.Count; i++)
             {
-                playerUnits[i].gameObject.transform.position = playerforePositions[i].position;
-                playerParty.PerformAction(i);
-                yield return new WaitForSeconds(2f);
-                ResetPosition();
+                if(playerUnits[i].isAlive)
+                {
+                    playerUnits[i].gameObject.transform.position = playerforePositions[i].position;
+                    playerParty.PerformAction(i);
+                    yield return new WaitForSeconds(2f);
+                    ResetPosition();
+                }
             }
             yield return new WaitForSeconds(2f);
             state = BattleState.ENEMYTURN;
@@ -108,10 +111,13 @@ public class GameManager : MonoBehaviour
         {
             for (int i = 0; i < enemyUnits.Count; i++)
             {
-                enemyUnits[i].gameObject.transform.position = enemyforePositions[i].position;
-                enemyParty.PerformAction(i);
-                yield return new WaitForSeconds(2f);
-                ResetPosition();
+                if(enemyUnits[i].isAlive)
+                {
+                    enemyUnits[i].gameObject.transform.position = enemyforePositions[i].position;
+                    enemyParty.PerformAction(i);
+                    yield return new WaitForSeconds(2f);
+                    ResetPosition();
+                }
             }
             yield return new WaitForSeconds(2f);
             state = BattleState.PLAYERINPUT;

@@ -27,7 +27,13 @@ public class EnemyParty : MonoBehaviour
         if(enemies[enemi].isAlive)
         {
             enemies[enemi].actionIndex = EnemyActions.ATTACK;
-            enemies[enemi].attackIndex = Random.Range(0, 3);
+            enemies[enemi].attackIndex = Random.Range(0, 4);
+            
+            while(!gameManager.playerUnits[enemies[enemi].attackIndex].isAlive)
+            {
+                enemies[enemi].attackIndex = Random.Range(0, 4);
+            }
+
             gameManager.ExchangeDamage(enemies[enemi].attackIndex, enemies[enemi].enemyStats.GetAttack(enemies[enemi].attackStat), false);
             AudioManager.PlaySFX(UIAudio.SoundEffectTags.ENEMY_HIT);
             battleUI.UpdateEnemyHealth();
@@ -65,6 +71,7 @@ public class EnemyParty : MonoBehaviour
             if((enemies[i].healthStat <= 0) && enemies[i].isAlive)
             {
                 enemies[i].isAlive = false;
+                battleMenu.UpdateEnemyNames(enemies);
                 enemies[i].gameObject.SetActive(false);
                 gameManager.KillConfirmed(false);
             }
