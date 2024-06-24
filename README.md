@@ -1,3 +1,4 @@
 # HeartbeatBitbreak
- 
-A prototype of a rhythm based RPG battle system. All the player's decisions are timed to a beat. Mostly a proof of concept than anything.
+### Project Description
+A RPG where players ascend a tower synchronized to its beat, emphasizing rhythm in exploration and combat. Scaled back to a proof of concept.
+
